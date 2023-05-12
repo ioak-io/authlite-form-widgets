@@ -1,0 +1,31 @@
+.authlite-button ,
+.authlite-primary-button {
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: 400;
+    height: 40px;
+    line-height: 24px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    background-color: #e4e4e4;
+    color: #000;
+    cursor: pointer;
+    transition: background-color 250ms ease-in-out, border-color 250ms ease-in-out;
+}
+
+.authlite-button:hover,
+.authlite-button:focus {
+    background-color: #d7d7d7;
+}
+
+.authlite-primary-button {
+    background-color: #219ef1;
+    color: #fff;
+}
+
+.authlite-primary-button:hover,
+.authlite-primary-button:focus {
+    background-color: #107cc4;
+    color: #fff;
+}

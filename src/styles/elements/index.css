@@ -1,1 +1,10 @@
 @import "./input.css";
+@import "./button.css";
+@import "./formelement.css";
+
+.authlite-action-bar {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 20px;
+    justify-content: flex-start;
+}
