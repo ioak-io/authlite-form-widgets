@@ -14,7 +14,7 @@ const FormElementMessage = (props: FormElementMessageProps) => {
 
     return (
         <div
-            className={`basicui-form-element-${props.type}`}
+            className={`authlite-form-element-${props.type}`}
         >
             {props.text}
         </div>

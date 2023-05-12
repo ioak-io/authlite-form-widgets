@@ -3,6 +3,7 @@ import './style.css';
 import Header from '../../Header';
 import SigninForm from '../../SigninForm';
 import SignupForm from '../../SignupForm';
+import ForgotPasswordForm from '../../ForgotPasswordForm';
 
 interface Props {
   logo?: any;
@@ -19,8 +20,9 @@ const DesignOne = (props: Props) => {
         {props.logo}
         {props.tagline}
       </Header>
-      {view === 'signin' && <SigninForm onSignup={() => setView("signup")} />}
+      {view === 'signin' && <SigninForm onSignup={() => setView("signup")} onForgotPassword={() => setView("forgotpassword")} />}
       {view === 'signup' && <SignupForm onSignin={() => setView("signin")} />}
+      {view === 'forgotpassword' && <ForgotPasswordForm onSignin={() => setView("signin")} />}
     </div>
   </div >;
 };

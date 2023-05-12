@@ -1,5 +1,5 @@
 {
-  "name": "basicui",
+  "name": "authlite",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ioak-dev/basicui.git"
+    "url": "git+https://github.com/ioak-dev/authlite.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ioak-dev/basicui/issues"
+    "url": "https://github.com/ioak-dev/authlite/issues"
   },
-  "homepage": "https://github.com/ioak-dev/basicui#readme",
+  "homepage": "https://github.com/ioak-dev/authlite#readme",
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@rollup/plugin-commonjs": "^24.0.0",
