@@ -4,6 +4,7 @@ import FormElementMessage from '../shared/FormElementMessage';
 
 interface Props {
   onSignin: any;
+  onSignup: any;
 }
 
 const SignupForm = (props: Props) => {
@@ -22,13 +23,8 @@ const SignupForm = (props: Props) => {
     })
   }
 
-  const onSignin = (event: any) => {
-    event.preventDefault();
-
-  }
-
   return (
-    <form onSubmit={onSignin} className="authlite-d1-signup-form">
+    <form onSubmit={props.onSignup} className="authlite-d1-signup-form">
       <div>
         <FormElementMessage text='Given name' type='label' />
         <input className="authlite-input" autoComplete='off' autoFocus name="givenName" value={state.email} onInput={onInput} />

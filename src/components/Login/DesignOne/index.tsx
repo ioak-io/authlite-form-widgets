@@ -8,6 +8,8 @@ import ForgotPasswordForm from '../../ForgotPasswordForm';
 interface Props {
   logo?: any;
   tagline?: any;
+  onSignin: any;
+  onSignup: any;
 }
 
 const DesignOne = (props: Props) => {
@@ -20,8 +22,8 @@ const DesignOne = (props: Props) => {
         {props.logo}
         {props.tagline}
       </Header>
-      {view === 'signin' && <SigninForm onSignup={() => setView("signup")} onForgotPassword={() => setView("forgotpassword")} />}
-      {view === 'signup' && <SignupForm onSignin={() => setView("signin")} />}
+      {view === 'signin' && <SigninForm onSignin={props.onSignin} onSignup={() => setView("signup")} onForgotPassword={() => setView("forgotpassword")} />}
+      {view === 'signup' && <SignupForm onSignup={props.onSignup} onSignin={() => setView("signin")} />}
       {view === 'forgotpassword' && <ForgotPasswordForm onSignin={() => setView("signin")} />}
     </div>
   </div >;

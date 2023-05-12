@@ -4,6 +4,8 @@ import "./style.css";
 import DesignOne from "./DesignOne";
 
 export type LoginProps = {
+    onSignin: any;
+    onSignup: any;
     children?: any;
 };
 
@@ -34,7 +36,11 @@ const Login = (props: LoginProps) => {
 
     return (
         <div className="authlite-login">
-            <DesignOne logo={logo} tagline={tagline}/>
+            <DesignOne
+                onSignin={props.onSignin}
+                onSignup={props.onSignup}
+                logo={logo}
+                tagline={tagline} />
         </div>
     );
 };
