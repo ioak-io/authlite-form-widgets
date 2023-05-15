@@ -4,23 +4,23 @@
 .authlite-form-element-info {
     margin-top: 4px;
     font-size: 10px;
-    color: var(--theme-danger-500);
+    color: #CC2936;
 }
 
 .authlite-form-element-warning {
-    color: var(--theme-warning-500);
+    color: #FFD25A;
 }
 
 .authlite-form-element-success {
-    color: var(--theme-success-500);
+    color: #86CD82;
 }
 
 .authlite-form-element-info {
-    color: var(--theme-default-500);
+    color: #666B6A;
 }
 
 .authlite-dark .authlite-form-element-info {
-    color: var(--theme-default-300);
+    color: #666B6A;
 }
 
 .authlite-form-element-label {
@@ -29,5 +29,5 @@
     margin-bottom: 4px;
     text-transform: capitalize;
     word-break: keep-all;
-    color: var(--authlite-formelement-label-color);
+    color: #666B6A;
 }

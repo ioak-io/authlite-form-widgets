@@ -1,7 +1,8 @@
 type SigninFormErrorMessages = {
     email?: string;
     password?: string;
-    common?: string;
+    system?: string;
+    unverifiedEmail?: string;
 }
 
 export default SigninFormErrorMessages;

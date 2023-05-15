@@ -8,7 +8,11 @@ import authliteBlack from './authlite_black.svg';
 import Tagline from "../Tagline";
 import * as AuthenticationService from "../../services/AuthenticationService";
 import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
-import SignupFormErrorMessage from "../types/SignupFormErrorMessageType";
+import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
+import SigninResponse from "../types/SigninResponse";
+import SigninRequest from "../types/SigninRequest";
+import SignupRequest from "../types/SignupRequest";
+import SignupResponse from "../types/SignupResponse";
 
 export type LoginWrapperProps = {
     children?: any;
@@ -19,18 +23,26 @@ export type LoginWrapperProps = {
  */
 const LoginWrapper = (props: LoginProps) => {
 
-    const [signinFormErrorMessages, setSigninFormErrorMessagess] = useState<SigninFormErrorMessages>({});
-    const [signupFormErrorMessages, setSignupFormErrorMessages] = useState<SignupFormErrorMessage>({});
+    const [signinFormErrorMessages, setSigninFormErrorMessages] = useState<SigninFormErrorMessages>({});
+    const [signupFormErrorMessages, setSignupFormErrorMessages] = useState<SignupFormErrorMessages>({});
 
-    const onSignin = (data: { email: string, password: string }) => {
-        AuthenticationService.signin("local", 212, data).then((response: any) => {
+    const onSignin = (data: SigninRequest) => {
+        AuthenticationService.signin("local", 212, data).then((response: SigninResponse) => {
             console.log(response);
-            setSigninFormErrorMessagess(response.errorMessages);
+            setSigninFormErrorMessages(response.errorMessages);
         })
     }
 
-    const onSignup = (event: any) => {
-        event.preventDefault();
+    const onSignup = (data: SignupRequest) => {
+        AuthenticationService.signup("local", 212, data, "1d9524a6-30df-4b3c-9402-503f4011896c").then((response: SignupResponse) => {
+            console.log(response);
+            setSignupFormErrorMessages(response.errorMessages);
+        })
+    }
+
+    const clearErrorMessages = () => {
+        setSigninFormErrorMessages({});
+        setSignupFormErrorMessages({});
     }
 
     return (
@@ -38,7 +50,9 @@ const LoginWrapper = (props: LoginProps) => {
             onSignin={onSignin}
             onSignup={onSignup}
             signinFormErrorMessages={signinFormErrorMessages}
-            signupFormErrorMessages={signupFormErrorMessages}>
+            signupFormErrorMessages={signupFormErrorMessages}
+            clearErrorMessages={clearErrorMessages}
+        >
             <Logo>
                 <img src={authliteBlack} alt="Authlite logo" />
             </Logo>

@@ -1,17 +1,19 @@
+import SigninRequest from "../components/types/SigninRequest";
+import SigninResponse from "../components/types/SigninResponse";
 import { isEmailValid, isEmptyOrSpaces } from "../utils/TextUtils";
 
-export const validateSigninForm = (payload: { email: string, password: string }) => {
+export const validateSigninForm = (payload: { email: string, password: string }): (SigninResponse | null) => {
     const errorMessages: any = {};
     const error = [];
     if (isEmptyOrSpaces(payload.email)) {
-        const errorCode = "BLANK";
+        const errorCode = "BLANK_USERNAME";
         error.push({
             "field": "email",
             errorCode
         });
         errorMessages.email = errorCode;
     } else if (!isEmailValid(payload.email)) {
-        const errorCode = "INVALID_EMAIL";
+        const errorCode = "INVALID_USERNAME";
         error.push({
             "field": "email",
             errorCode
@@ -20,7 +22,7 @@ export const validateSigninForm = (payload: { email: string, password: string })
     }
 
     if (isEmptyOrSpaces(payload.password)) {
-        const errorCode = "BLANK";
+        const errorCode = "BLANK_PASSWORD";
         error.push({
             "field": "password",
             errorCode
@@ -39,20 +41,14 @@ export const validateSigninForm = (payload: { email: string, password: string })
     }
 }
 
-export const processSigninResponse = (response: any, data: any) => {
-    if (response.status === 200) {
-        return {
-            outcome: "SUCCESS",
-            data,
-            errorMessages: {}
-        };
-    } else if (response.status === 400) {
+export const processSigninResponse = (request: SigninRequest, response: any, data: any): SigninResponse => {
+    if (response.status === 400) {
         const errorCode = "BAD_REQUEST";
         return {
             outcome: "ERROR",
             errorCode,
             data,
-            errorMessages: { common: errorCode }
+            errorMessages: { system: errorCode }
         };
     } else if (response.status === 404) {
         const errorCode = "USER_NOT_FOUND";
@@ -68,7 +64,7 @@ export const processSigninResponse = (response: any, data: any) => {
             outcome: "ERROR",
             errorCode,
             data,
-            errorMessages: { email: errorCode }
+            errorMessages: { email: errorCode, unverifiedEmail: request.email }
         };
     } else if (response.status === 401) {
         const errorCode = "INCORRECT_PASSWORD";
@@ -79,14 +75,19 @@ export const processSigninResponse = (response: any, data: any) => {
             errorMessages: { password: errorCode }
         };
     }
+    return {
+        outcome: "SUCCESS",
+        data,
+        errorMessages: {}
+    };
 }
 
-export const processSigninException = (error: any) => {
-    const errorCode = "UNKNOWN";
+export const processSigninException = (error: any): SigninResponse => {
+    const errorCode = "UNKNOWN_ERROR";
     return {
         outcome: "ERROR",
         errorCode,
         data: error,
-        errorMessages: { common: errorCode }
+        errorMessages: { system: errorCode }
     };
 }

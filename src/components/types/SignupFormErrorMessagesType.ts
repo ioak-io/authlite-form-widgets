@@ -1,7 +1,10 @@
-type SignupFormErrorMessage = {
+type SignupFormErrorMessages = {
+    given_name?: string;
+    family_name?: string;
     email?: string;
     password?: string;
-    common?: string;
+    retype_password?: string;
+    system?: string;
 }
 
-export default SignupFormErrorMessage;
+export default SignupFormErrorMessages;

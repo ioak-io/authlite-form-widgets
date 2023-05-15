@@ -3,14 +3,17 @@ import React, { useState, useRef, useEffect } from "react";
 import "./style.css";
 import DesignOne from "./DesignOne";
 import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
-import SignupFormErrorMessage from "../types/SignupFormErrorMessagesType";
+import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
+import { TranslationDictionary } from "../types/TranslationDictionaryType";
 
 export type LoginProps = {
     onSignin: any;
     onSignup: any;
     signinFormErrorMessages: SigninFormErrorMessages;
-    signupFormErrorMessages: SignupFormErrorMessage;
+    signupFormErrorMessages: SignupFormErrorMessages;
     children?: any;
+    dictionary?: TranslationDictionary;
+    clearErrorMessages: any;
 };
 
 /**
@@ -43,8 +46,12 @@ const Login = (props: LoginProps) => {
             <DesignOne
                 onSignin={props.onSignin}
                 onSignup={props.onSignup}
+                signinFormErrorMessages={props.signinFormErrorMessages}
+                signupFormErrorMessages={props.signupFormErrorMessages}
+                clearErrorMessages={props.clearErrorMessages}
                 logo={logo}
-                tagline={tagline} />
+                tagline={tagline}
+                dictionary={props.dictionary} />
         </div>
     );
 };

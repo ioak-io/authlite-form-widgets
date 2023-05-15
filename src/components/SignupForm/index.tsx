@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import FormElementMessage from '../shared/FormElementMessage';
+import SignupFormErrorMessages from '../types/SignupFormErrorMessagesType';
+import { TranslationDictionary, TranslationScope, getTranslation } from '../types/TranslationDictionaryType';
+import SignupRequest from '../types/SignupRequest';
 
 interface Props {
   onSignin: any;
   onSignup: any;
+  signupFormErrorMessages: SignupFormErrorMessages;
+  dictionary?: TranslationDictionary;
 }
 
 const SignupForm = (props: Props) => {
-  const [state, setState] = useState({
-    givenName: "",
-    familyName: "",
+  const [state, setState] = useState<SignupRequest>({
+    given_name: "",
+    family_name: "",
     email: "",
     password: "",
-    repeatPassword: ""
+    retype_password: ""
   });
 
   const onInput = (event: any) => {
@@ -23,31 +28,47 @@ const SignupForm = (props: Props) => {
     })
   }
 
+  const onSignup = (event: any) => {
+    event.preventDefault();
+    props.onSignup({
+      ...state
+    })
+  }
+
   return (
-    <form onSubmit={props.onSignup} className="authlite-d1-signup-form">
+    <form onSubmit={onSignup} className="authlite-d1-signup-form">
       <div>
-        <FormElementMessage text='Given name' type='label' />
-        <input className="authlite-input" autoComplete='off' autoFocus name="givenName" value={state.email} onInput={onInput} />
+        <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_FORM, "LABEL_GIVENNAME", props.dictionary)} type='label' />
+        <input className="authlite-input" autoComplete='off' autoFocus name="given_name" value={state.given_name} onInput={onInput} />
+        {props.signupFormErrorMessages.given_name && <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_ERROR, props.signupFormErrorMessages.given_name, props.dictionary)} type='error' />}
       </div>
       <div>
-        <FormElementMessage text='Family name' type='label' />
-        <input className="authlite-input" autoComplete='off' name="familyName" value={state.email} onInput={onInput} />
+        <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_FORM, "LABEL_FAMILYNAME", props.dictionary)} type='label' />
+        <input className="authlite-input" autoComplete='off' name="family_name" value={state.family_name} onInput={onInput} />
+        {props.signupFormErrorMessages.family_name && <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_ERROR, props.signupFormErrorMessages.family_name, props.dictionary)} type='error' />}
       </div>
       <div>
-        <FormElementMessage text='Username or Email Address' type='label' />
+        <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_FORM, "LABEL_EMAIL", props.dictionary)} type='label' />
         <input className="authlite-input" autoComplete='off' name="email" value={state.email} onInput={onInput} />
+        {props.signupFormErrorMessages.email && <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_ERROR, props.signupFormErrorMessages.email, props.dictionary)} type='error' />}
       </div>
       <div>
-        <FormElementMessage text='Password' type='label' />
+        <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_FORM, "LABEL_PASSWORD", props.dictionary)} type='label' />
         <input className="authlite-input" name="password" value={state.password} onInput={onInput} type="password" />
+        {props.signupFormErrorMessages.password && <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_ERROR, props.signupFormErrorMessages.password, props.dictionary)} type='error' />}
       </div>
       <div>
-        <FormElementMessage text='Repeat Password' type='label' />
-        <input className="authlite-input" name="repeatPassword" value={state.repeatPassword} onInput={onInput} type="password" />
+        <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_FORM, "LABEL_RETYPEPASSWORD", props.dictionary)} type='label' />
+        <input className="authlite-input" name="retype_password" value={state.retype_password} onInput={onInput} type="password" />
+        {props.signupFormErrorMessages.retype_password && <FormElementMessage text={getTranslation(TranslationScope.SIGNUP_ERROR, props.signupFormErrorMessages.retype_password, props.dictionary)} type='error' />}
       </div>
       <div className="authlite-action-bar">
-        <button className="authlite-primary-button" type="submit">Create account</button>
-        <button className="authlite-button" onClick={props.onSignin}>Sign in now</button>
+        <button className="authlite-primary-button" type="submit">
+          {getTranslation(TranslationScope.SIGNUP_FORM, "ACTION_CREATEACCOUNT", props.dictionary)}
+        </button>
+        <button className="authlite-button" onClick={props.onSignin}>
+          {getTranslation(TranslationScope.SIGNUP_FORM, "ACTION_SIGNIN", props.dictionary)}
+        </button>
       </div>
     </form>
   )
