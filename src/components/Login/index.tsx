@@ -5,15 +5,18 @@ import DesignOne from "./DesignOne";
 import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
 import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
 import { TranslationDictionary } from "../types/TranslationDictionaryType";
+import PageView from "../types/PageViewType";
 
 export type LoginProps = {
     onSignin: any;
     onSignup: any;
+    children?: any;
     signinFormErrorMessages: SigninFormErrorMessages;
     signupFormErrorMessages: SignupFormErrorMessages;
-    children?: any;
-    dictionary?: TranslationDictionary;
     clearErrorMessages: any;
+    dictionary?: TranslationDictionary;
+    view: PageView;
+    changeView: any;
 };
 
 /**
@@ -22,6 +25,7 @@ export type LoginProps = {
 const Login = (props: LoginProps) => {
     const [logo, setLogo] = useState<any>(null);
     const [tagline, setTagline] = useState<any>(null);
+    const [placeholder, setPlaceholder] = useState<any>(null);
 
     useEffect(() => {
         let _children = props.children;
@@ -38,6 +42,9 @@ const Login = (props: LoginProps) => {
             if (item.type.displayName === "Tagline" || item.type.name === "Tagline") {
                 setTagline(item);
             }
+            if (item.type.displayName === "Placeholder" || item.type.name === "TaglinePlaceholder") {
+                setPlaceholder(item);
+            }
         })
     }, [props.children]);
 
@@ -51,7 +58,11 @@ const Login = (props: LoginProps) => {
                 clearErrorMessages={props.clearErrorMessages}
                 logo={logo}
                 tagline={tagline}
-                dictionary={props.dictionary} />
+                placeholder={placeholder}
+                dictionary={props.dictionary} 
+                view={props.view}
+                changeView={props.changeView}
+                />
         </div>
     );
 };

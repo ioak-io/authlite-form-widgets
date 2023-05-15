@@ -37,7 +37,8 @@ export enum TranslationScope {
     "SIGNIN_FORM" = "SIGNIN_FORM",
     "SIGNIN_ERROR" = "SIGNIN_ERROR",
     "SIGNUP_FORM" = "SIGNUP_FORM",
-    "SIGNUP_ERROR" = "SIGNUP_ERROR"
+    "SIGNUP_ERROR" = "SIGNUP_ERROR",
+    "SIGNIN_SUCCESS_PAGE" = "SIGNIN_SUCCESS_PAGE"
 }
 
 export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
@@ -71,7 +72,6 @@ export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
     SIGNUP_ERROR__BLANK_GIVENNAME: "Given name is empty",
     SIGNUP_ERROR__BLANK_RETYPEPASSWORD: "Retype password is empty",
     SIGNUP_ERROR__PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
-
 }
 
 export const getTranslation = (

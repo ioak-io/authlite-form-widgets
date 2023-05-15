@@ -5,10 +5,10 @@ interface Props {
   children: any;
 }
 
-const InfoPageFooter = (props: Props) => {
-  return <div className='authlite-infopage-footer'>
+const InfoPageDescription = (props: Props) => {
+  return <div className='authlite-infopage-description'>
     {props.children}
   </div>;
 };
 
-export default InfoPageFooter;
+export default InfoPageDescription;

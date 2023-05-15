@@ -6,31 +6,35 @@ import SignupForm from '../../SignupForm';
 import ForgotPasswordForm from '../../ForgotPasswordForm';
 import SigninFormErrorMessages from '../../types/SigninFormErrorMessagesType';
 import SignupFormErrorMessages from '../../types/SignupFormErrorMessagesType';
-import { TranslationDictionary } from '../../types/TranslationDictionaryType';
+import { TranslationDictionary, TranslationScope, getTranslation } from '../../types/TranslationDictionaryType';
 import SendVerifyLinkForm from '../../SendVerifyLinkForm';
+import PageView from '../../types/PageViewType';
+import InfoPage from '../../InfoPage';
+import InfoPageDescription from '../../InfoPage/InfoPageDescription';
 
 interface Props {
   logo?: any;
   tagline?: any;
+  placeholder?: any;
   onSignin: any;
   onSignup: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
-  dictionary?: TranslationDictionary;
   clearErrorMessages: any;
+  dictionary?: TranslationDictionary;
+  view: PageView;
+  changeView: any;
 }
 
 const DesignOne = (props: Props) => {
-  const [view, setView] = useState('signin');
-
   useEffect(() => {
     if (props.signinFormErrorMessages.unverifiedEmail) {
-      setView('verifyemail');
+      props.changeView('verifyemail');
     }
   }, [props.signinFormErrorMessages]);
 
-  const changeView = (_view: string) => {
-    setView(_view);
+  const changeView = (_view: PageView) => {
+    props.changeView(_view);
     props.clearErrorMessages();
   }
 
@@ -39,23 +43,24 @@ const DesignOne = (props: Props) => {
     <div className="authlite-d1__right">
       <Header>
         {props.logo}
-        {view === 'signin' && props.tagline}
+        {props.view === PageView.signin && props.tagline}
       </Header>
-      {view === 'signin' && <SigninForm
+      {props.view === PageView.signin && <SigninForm
         onSignin={props.onSignin}
-        onSignup={() => changeView("signup")}
-        onForgotPassword={() => changeView("forgotpassword")}
+        onSignup={() => changeView(PageView.signup)}
+        onForgotPassword={() => changeView(PageView.forgotpassword)}
         signinFormErrorMessages={props.signinFormErrorMessages}
         dictionary={props.dictionary}
       />}
-      {view === 'signup' && <SignupForm
+      {props.view === PageView.signup && <SignupForm
         onSignup={props.onSignup}
-        onSignin={() => changeView("signin")}
+        onSignin={() => changeView(PageView.signin)}
         signupFormErrorMessages={props.signupFormErrorMessages}
         dictionary={props.dictionary}
       />}
-      {view === 'forgotpassword' && <ForgotPasswordForm onSignin={() => changeView("signin")} />}
-      {view === 'verifyemail' && <SendVerifyLinkForm email={props.signinFormErrorMessages.unverifiedEmail || ''} onSignin={() => changeView("signin")} />}
+      {props.view === PageView.forgotpassword && <ForgotPasswordForm onSignin={() => changeView(PageView.signin)} />}
+      {props.view === PageView.verifyemail && <SendVerifyLinkForm email={props.signinFormErrorMessages.unverifiedEmail || ''} onSignin={() => changeView(PageView.signin)} />}
+      {props.view === PageView.placeholder && props.placeholder}
     </div>
   </div >;
 };

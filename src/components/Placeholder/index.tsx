@@ -5,10 +5,10 @@ interface Props {
   children: any;
 }
 
-const InfoPageBody = (props: Props) => {
-  return <div className='authlite-infopage-body'>
+const Placeholder = (props: Props) => {
+  return <div className='authlite-placeholder'>
     {props.children}
-  </div>;
+  </div >;
 };
 
-export default InfoPageBody;
+export default Placeholder;

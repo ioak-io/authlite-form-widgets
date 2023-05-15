@@ -8,7 +8,7 @@ interface Props {
 
 const InfoPage = (props: Props) => {
 
-  return <div className='authlite-d1-infopage'>
+  return <div className='authlite-infopage'>
     <h1>{props.heading}</h1>
     <div>
       {props.children}
