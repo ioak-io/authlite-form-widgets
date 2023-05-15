@@ -39,13 +39,13 @@ const SigninForm = (props: Props) => {
         <input className="authlite-input" name="password" value={state.password} onInput={onInput} type="password" />
       </div>
       <div className="authlite-d1-signin-form__forgot">
-        <button onClick={props.onForgotPassword}>
+        <button type="button" onClick={props.onForgotPassword}>
           Forgot Password?
         </button>
       </div>
       <div className="authlite-action-bar">
         <button className="authlite-primary-button" type="submit">Sign in</button>
-        <button className="authlite-button" onClick={props.onSignup}>Create account</button>
+        <button className="authlite-button" type="button" onClick={props.onSignup}>Create account</button>
       </div>
     </form>
   )

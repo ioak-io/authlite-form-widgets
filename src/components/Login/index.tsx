@@ -2,10 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 
 import "./style.css";
 import DesignOne from "./DesignOne";
+import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
+import SignupFormErrorMessage from "../types/SignupFormErrorMessagesType";
 
 export type LoginProps = {
     onSignin: any;
     onSignup: any;
+    signinFormErrorMessages: SigninFormErrorMessages;
+    signupFormErrorMessages: SignupFormErrorMessage;
     children?: any;
 };
 

@@ -1,5 +1,5 @@
 import { isEmailValid, isEmptyOrSpaces } from "../utils/TextUtils";
-import { processSigninResponse, validateSigninForm } from "./AuthenticationHelper";
+import { processSigninException, processSigninResponse, validateSigninForm } from "./AuthenticationHelper";
 
 const BASE_URL_PRODUCTION = "https://api.ioak.io:8010/api";
 const BASE_URL_LOCAL = "http://localhost:4010/api";
@@ -31,10 +31,6 @@ export const signin = (environment: 'local' | 'production', realm: number, paylo
                 return processSigninResponse(response, data);
             }))
         .catch((error: any) => {
-            return {
-                outcome: "ERROR",
-                errorCode: "UNKNOWN",
-                data: error
-            };
+            return processSigninException(error);
         });
 }
