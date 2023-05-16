@@ -8,7 +8,9 @@
 
 .authlite-d1-signin-form__forgot {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .authlite-d1-signin-form__forgot button {

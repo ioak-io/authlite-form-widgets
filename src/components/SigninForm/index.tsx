@@ -4,6 +4,7 @@ import FormElementMessage from '../shared/FormElementMessage';
 import SigninFormErrorMessages from '../types/SigninFormErrorMessagesType';
 import SigninRequest from '../types/SigninRequest';
 import { TranslationDictionary, TranslationScope, getTranslation } from '../types/TranslationDictionaryType';
+import Checkbox from '../ui/Checkbox';
 
 interface Props {
   onSignin: any;
@@ -46,6 +47,7 @@ const SigninForm = (props: Props) => {
         {props.signinFormErrorMessages.password && <FormElementMessage text={getTranslation(TranslationScope.SIGNIN_ERROR, props.signinFormErrorMessages.password, props.dictionary)} type='error' />}
       </div>
       <div className="authlite-d1-signin-form__forgot">
+        <Checkbox label='Remember me' />
         <button type="button" onClick={props.onForgotPassword}>
           {getTranslation(TranslationScope.SIGNIN_FORM, "ACTION_FORGOTPASSWORD", props.dictionary)}
         </button>
