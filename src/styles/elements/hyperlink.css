@@ -12,12 +12,12 @@ a:active {
 }
 
 a {
-    color: #219ef1;
+    color: var(--theme-color-primary);
     border-bottom: 1px dotted transparent;
 }
 
 a:hover,
 a:focus {
-    color: #107cc4;
-    border-color: #107cc4;
+    color: var(--theme-color-primary-alt);
+    border-color: var(--theme-color-primary-alt);
 }

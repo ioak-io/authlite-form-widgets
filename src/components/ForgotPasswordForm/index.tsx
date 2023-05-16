@@ -24,12 +24,12 @@ const ForgotPasswordForm = (props: Props) => {
   }
 
   return (
-    <form onSubmit={onSignin} className="authlite-d1-forgotpassword-form">
+    <form onSubmit={onSignin} className="authlite-d1-forgotpassword-form authlite-margin-top">
       <div>
         <FormElementMessage text='Email Address' type='label' />
         <input className="authlite-input" autoComplete='off' autoFocus name="email" value={state.email} onInput={onInput} />
       </div>
-      <div className="authlite-action-bar">
+      <div className="authlite-action-bar authlite-margin-top">
         <button className="authlite-primary-button" type="submit">Send password reset link</button>
         <button className="authlite-button" onClick={props.onSignin}>Sign in now</button>
       </div>
