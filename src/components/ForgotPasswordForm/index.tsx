@@ -24,7 +24,7 @@ const ForgotPasswordForm = (props: Props) => {
   }
 
   return (
-    <form onSubmit={onSignin} className="authlite-d1-signup-form">
+    <form onSubmit={onSignin} className="authlite-d1-forgotpassword-form">
       <div>
         <FormElementMessage text='Email Address' type='label' />
         <input className="authlite-input" autoComplete='off' autoFocus name="email" value={state.email} onInput={onInput} />

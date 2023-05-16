@@ -30,7 +30,7 @@
     max-width: 456px;
     padding: 20px;
     margin: auto;
-    row-gap: 20px;
+    /* row-gap: 20px; */
 }
 
 .authlite-d1__right__header {}

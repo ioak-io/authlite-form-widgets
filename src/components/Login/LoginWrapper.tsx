@@ -15,9 +15,9 @@ import SignupRequest from "../types/SignupRequest";
 import SignupResponse from "../types/SignupResponse";
 import PageView from "../types/PageViewType";
 import Placeholder from "../Placeholder";
-import InfoPageDescription from "../InfoPage/InfoPageDescription";
 import InfoPage from "../InfoPage";
 import InfoPageFootnote from "../InfoPage/InfoPageFootnote";
+import InfoPageDescription from "../InfoPage/InfoPageDescription";
 
 export type LoginWrapperProps = {
     children?: any;
@@ -74,7 +74,7 @@ const LoginWrapper = (props: LoginProps) => {
             </Logo>
             <Tagline title="Hello Again!" subtitle="metus dui sapien phasellus arcu posuere eu adipiscing proin adipiscing mi luctus dignissim sem. hendrerit dapibus ut scelerisque tellus malesuada scelerisque vel est fermentum nullam sociosqu." />
             <Placeholder>
-                {successPage === "signin" && <InfoPage heading='Authentication successful!'>
+                {successPage === "signup" && <InfoPage heading='Authentication successful!'>
                     <InfoPageDescription>
                         Posuere ipsum tellus ornare rutrumaliquam torquent fermentum euismod musvestibulum tincidunt cursus quisque elitsuspendisse augue. rutrumaliquam commodo <a onClick={() => setView(PageView.signin)}>login now</a> parturient rutrumaliquam nec varius sociosqu.
                     </InfoPageDescription>
@@ -82,10 +82,13 @@ const LoginWrapper = (props: LoginProps) => {
                         Commodo nullam et facilisis hendrerit pharetra platea duis commodo nascetur libero aptent
                     </InfoPageFootnote>
                 </InfoPage>}
-                {successPage === "signup" && <InfoPage heading='User account created!'>
+                {successPage === "signin" && <InfoPage heading='User account created!'>
                     <InfoPageDescription>
-                        User created <a onClick={() => setView(PageView.signin)}>login now</a> allowing users to access files, applications, and tools from any device, anywhere in the world. The application can provide advanced security features, including multi-factor authentication and data encryption, to protect sensitive information.
+                        Gravida dolor suscipit urna sagittis per  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
                     </InfoPageDescription>
+                    <InfoPageFootnote>
+                        Rutrum elit lacus consequat justo luctus per proin venenatis varius quam dui dignissim etiam
+                    </InfoPageFootnote>
                 </InfoPage>}
             </Placeholder>
         </Login>

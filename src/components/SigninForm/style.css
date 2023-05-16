@@ -3,6 +3,7 @@
     grid-auto-flow: row;
     row-gap: 20px;
     width: 100%;
+    margin-top: 20px;
 }
 
 .authlite-d1-signin-form__forgot {
