@@ -6,13 +6,16 @@ import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
 import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
 import { TranslationDictionary } from "../types/TranslationDictionaryType";
 import PageView from "../types/PageViewType";
+import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
 
 export type LoginProps = {
     onSignin: any;
     onSignup: any;
+    onForgotPassword: any;
     children?: any;
     signinFormErrorMessages: SigninFormErrorMessages;
     signupFormErrorMessages: SignupFormErrorMessages;
+    forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
     clearErrorMessages: any;
     dictionary?: TranslationDictionary;
     view: PageView;
@@ -55,14 +58,16 @@ const Login = (props: LoginProps) => {
                 onSignup={props.onSignup}
                 signinFormErrorMessages={props.signinFormErrorMessages}
                 signupFormErrorMessages={props.signupFormErrorMessages}
+                forgotPasswordFormErrorMessages={props.forgotPasswordFormErrorMessages}
                 clearErrorMessages={props.clearErrorMessages}
                 logo={logo}
                 tagline={tagline}
                 placeholder={placeholder}
-                dictionary={props.dictionary} 
+                dictionary={props.dictionary}
                 view={props.view}
                 changeView={props.changeView}
-                />
+                onForgotPassword={props.onForgotPassword}
+            />
         </div>
     );
 };

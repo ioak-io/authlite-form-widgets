@@ -1,6 +1,9 @@
+import ForgotPasswordRequest from "../components/types/ForgotPasswordRequestType";
+import ForgotPasswordResponse from "../components/types/ForgotPasswordResponseType";
 import SigninRequest from "../components/types/SigninRequest";
 import SigninResponse from "../components/types/SigninResponse";
 import SignupRequest from "../components/types/SignupRequest";
+import { processResetPasswordLinkFormException, processResetPasswordLinkResponse, validateResetPasswordLinkForm } from "./ResetPasswordLinkHelper";
 import { processSigninException, processSigninResponse, validateSigninForm } from "./SigninHelper";
 import { processSignupException, processSignupResponse, validateSignupForm } from "./SignupHelper";
 
@@ -71,5 +74,36 @@ export const signup = (environment: 'local' | 'production', realm: number | stri
             }))
         .catch((error: any) => {
             return processSignupException(error);
+        });
+}
+
+
+export const resetPasswordLink = (environment: 'local' | 'production', realm: number | string, payloadRequest: ForgotPasswordRequest): Promise<ForgotPasswordResponse> => {
+    const payload: ForgotPasswordRequest = {
+        email: payloadRequest.email?.trim(),
+    }
+    let url = BASE_URL_PRODUCTION;
+    if (environment === 'local') {
+        url = BASE_URL_LOCAL;
+    }
+    const validationError = validateResetPasswordLinkForm(payload);
+    if (validationError) {
+        return new Promise((resolve, reject) => {
+            resolve(validationError);
+        })
+    }
+    return fetch(`${url}/${realm}/user/auth/reset-password-link`, {
+        method: "POST",
+        body: JSON.stringify({ ...payload }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((response) => response.json()
+            .then((data) => {
+                return processResetPasswordLinkResponse(payload, response, data);
+            }))
+        .catch((error: any) => {
+            return processResetPasswordLinkFormException(error);
         });
 }

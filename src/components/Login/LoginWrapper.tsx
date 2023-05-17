@@ -18,6 +18,8 @@ import Placeholder from "../Placeholder";
 import InfoPage from "../InfoPage";
 import InfoPageFootnote from "../InfoPage/InfoPageFootnote";
 import InfoPageDescription from "../InfoPage/InfoPageDescription";
+import ForgotPasswordResponse from "../types/ForgotPasswordResponseType";
+import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
 
 export type LoginWrapperProps = {
     children?: any;
@@ -29,9 +31,10 @@ export type LoginWrapperProps = {
 const LoginWrapper = (props: LoginProps) => {
 
     const [view, setView] = useState<PageView>(PageView.signin);
-    const [successPage, setSuccessPage] = useState<'signin' | 'signup' | null>(null);
+    const [successPage, setSuccessPage] = useState<'signin' | 'signup' | 'resetpassword' | null>(null);
     const [signinFormErrorMessages, setSigninFormErrorMessages] = useState<SigninFormErrorMessages>({});
     const [signupFormErrorMessages, setSignupFormErrorMessages] = useState<SignupFormErrorMessages>({});
+    const [forgotPasswordFormErrorMessages, setForgotPasswordFormErrorMessages] = useState<ForgotPasswordFormErrorMessages>({});
 
     const onSignin = (data: SigninRequest) => {
         AuthenticationService.signin("local", 212, data).then((response: SigninResponse) => {
@@ -54,6 +57,17 @@ const LoginWrapper = (props: LoginProps) => {
         })
     }
 
+    const onForgotPassword = (data: SignupRequest) => {
+        AuthenticationService.resetPasswordLink("local", 212, data).then((response: ForgotPasswordResponse) => {
+            console.log(response);
+            if (response.outcome === "SUCCESS") {
+                setView(PageView.placeholder);
+                setSuccessPage("resetpassword");
+            }
+            setForgotPasswordFormErrorMessages(response.errorMessages);
+        })
+    }
+
     const clearErrorMessages = () => {
         setSigninFormErrorMessages({});
         setSignupFormErrorMessages({});
@@ -63,8 +77,10 @@ const LoginWrapper = (props: LoginProps) => {
         <Login
             onSignin={onSignin}
             onSignup={onSignup}
+            onForgotPassword={onForgotPassword}
             signinFormErrorMessages={signinFormErrorMessages}
             signupFormErrorMessages={signupFormErrorMessages}
+            forgotPasswordFormErrorMessages={forgotPasswordFormErrorMessages}
             clearErrorMessages={clearErrorMessages}
             view={view}
             changeView={setView}
@@ -83,6 +99,14 @@ const LoginWrapper = (props: LoginProps) => {
                     </InfoPageFootnote>
                 </InfoPage>}
                 {successPage === "signup" && <InfoPage heading='User account created!'>
+                    <InfoPageDescription>
+                        Gravida dolor suscipit urna sagittis per  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
+                    </InfoPageDescription>
+                    <InfoPageFootnote>
+                        Rutrum elit lacus consequat justo luctus per proin venenatis varius quam dui dignissim etiam
+                    </InfoPageFootnote>
+                </InfoPage>}
+                {successPage === "resetpassword" && <InfoPage heading='Password reset link sent!'>
                     <InfoPageDescription>
                         Gravida dolor suscipit urna sagittis per  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
                     </InfoPageDescription>

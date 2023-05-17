@@ -1,14 +1,19 @@
 .authlite-margin-top {
     margin-top: 20px;
 }
+
 .authlite-margin-top-small {
     margin-top: 10px;
 }
 
-.authlite-action-bar {
+.authlite-action-bar,
+.authlite-action-bar-center {
     display: grid;
     grid-auto-flow: column;
-    column-gap: 20px;
-    justify-content: flex-start;
     align-items: center;
+    column-gap: 10px;
+}
+
+.authlite-action-bar-center {
+    justify-content: center;
 }

@@ -6,7 +6,7 @@ import { TranslationDictionary, TranslationScope, getTranslation } from '../type
 interface Props {
   onSignin: any;
   email: string;
-  dictionary?: TranslationDictionary
+  dictionary?: TranslationDictionary;
 }
 
 const ResendVerifyLinkForm = (props: Props) => {
@@ -22,7 +22,7 @@ const ResendVerifyLinkForm = (props: Props) => {
       </div>
       <div className="authlite-action-bar authlite-margin-top">
         <button className="authlite-primary-button" type="submit">{getTranslation(TranslationScope.RESEND_VERIFY_LINK_FORM, "ACTION_SEND", props.dictionary)}</button>
-        <button className="authlite-button" onClick={props.onSignin}>{getTranslation(TranslationScope.RESEND_VERIFY_LINK_FORM, "ACTION_SIGNIN", props.dictionary)}</button>
+        <button className="authlite-button-as-link" onClick={props.onSignin}>{getTranslation(TranslationScope.RESEND_VERIFY_LINK_FORM, "ACTION_SIGNIN", props.dictionary)}</button>
       </div>
     </form>
   )

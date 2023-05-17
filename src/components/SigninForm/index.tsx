@@ -54,6 +54,9 @@ const SigninForm = (props: Props) => {
       </div>
       <div className="authlite-action-bar authlite-margin-top">
         <button className="authlite-primary-button" type="submit">{getTranslation(TranslationScope.SIGNIN_FORM, "ACTION_SIGNIN", props.dictionary)}</button>
+      </div>
+      <div className="authlite-margin-top authlite-action-bar-center">
+        Don't have an account?
         <button className="authlite-button-as-link" type="button" onClick={props.onSignup}>{getTranslation(TranslationScope.SIGNIN_FORM, "ACTION_CREATEACCOUNT", props.dictionary)}</button>
       </div>
     </form>

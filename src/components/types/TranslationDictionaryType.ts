@@ -32,10 +32,20 @@ export type TranslationDictionary = {
     SIGNUP_ERROR__USER_ALREADY_EXISTS: string,
     SIGNUP_ERROR__BAD_REQUEST: string,
     SIGNUP_ERROR__UNKNOWN_ERROR: string,
+
     RESEND_VERIFY_LINK_FORM__MESSAGE: string,
     RESEND_VERIFY_LINK_FORM__LABEL_EMAIL: string,
     RESEND_VERIFY_LINK_FORM__ACTION_SEND: string,
     RESEND_VERIFY_LINK_FORM__ACTION_SIGNIN: string,
+
+    FORGOT_PASSWORD_FORM__MESSAGE: string,
+    FORGOT_PASSWORD_FORM__LABEL_EMAIL: string,
+    FORGOT_PASSWORD_FORM__ACTION_SEND: string,
+    FORGOT_PASSWORD_FORM__ACTION_SIGNIN: string,
+    FORGOT_PASSWORD_ERROR__USER_NOT_FOUND: string,
+    FORGOT_PASSWORD_ERROR__INVALID_USERNAME: string,
+    FORGOT_PASSWORD_ERROR__BAD_REQUEST: string,
+    FORGOT_PASSWORD_ERROR__UNKNOWN_ERROR: string,
 
     [key: string]: string,
 }
@@ -46,7 +56,9 @@ export enum TranslationScope {
     "SIGNUP_FORM" = "SIGNUP_FORM",
     "SIGNUP_ERROR" = "SIGNUP_ERROR",
     "SIGNIN_SUCCESS_PAGE" = "SIGNIN_SUCCESS_PAGE",
-    "RESEND_VERIFY_LINK_FORM" = "RESEND_VERIFY_LINK_FORM"
+    "RESEND_VERIFY_LINK_FORM" = "RESEND_VERIFY_LINK_FORM",
+    "FORGOT_PASSWORD_FORM" = "FORGOT_PASSWORD_FORM",
+    "FORGOT_PASSWORD_ERROR" = "FORGOT_PASSWORD_ERROR",
 }
 
 export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
@@ -87,8 +99,19 @@ export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
 
     RESEND_VERIFY_LINK_FORM__MESSAGE: "Email verification pending. Please click on the link sent to your email address to activate your user account.",
     RESEND_VERIFY_LINK_FORM__LABEL_EMAIL: "Email Address",
-    RESEND_VERIFY_LINK_FORM__ACTION_SEND: "Resend email verification link",
+    RESEND_VERIFY_LINK_FORM__ACTION_SEND: "Resend verification link",
     RESEND_VERIFY_LINK_FORM__ACTION_SIGNIN: "Sign in now",
+
+    FORGOT_PASSWORD_FORM__MESSAGE: "If you don't remember your password, you can reset your password by requesting for a password reset link to your registered email address.",
+    FORGOT_PASSWORD_FORM__LABEL_EMAIL: "Email Address",
+    FORGOT_PASSWORD_FORM__ACTION_SEND: "Send password reset link",
+    FORGOT_PASSWORD_FORM__ACTION_SIGNIN: "Sign in now",
+
+    FORGOT_PASSWORD_ERROR__BLANK_USERNAME: "Username is empty",
+    FORGOT_PASSWORD_ERROR__USER_NOT_FOUND: "User does not exist",
+    FORGOT_PASSWORD_ERROR__INVALID_USERNAME: "Email is not valid",
+    FORGOT_PASSWORD_ERROR__BAD_REQUEST: "Bad request",
+    FORGOT_PASSWORD_ERROR__UNKNOWN_ERROR: "Unknown error"
 }
 
 export const getTranslation = (
