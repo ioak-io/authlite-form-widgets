@@ -74,7 +74,7 @@ const LoginWrapper = (props: LoginProps) => {
             </Logo>
             <Tagline title="Hello Again!" subtitle="metus dui sapien phasellus arcu posuere eu adipiscing proin adipiscing mi luctus dignissim sem. hendrerit dapibus ut scelerisque tellus malesuada scelerisque vel est fermentum nullam sociosqu." />
             <Placeholder>
-                {successPage === "signup" && <InfoPage heading='Authentication successful!'>
+                {successPage === "signin" && <InfoPage heading='Authentication successful!'>
                     <InfoPageDescription>
                         Posuere ipsum tellus ornare rutrumaliquam torquent fermentum euismod musvestibulum tincidunt cursus quisque elitsuspendisse augue. rutrumaliquam commodo <a onClick={() => setView(PageView.signin)}>login now</a> parturient rutrumaliquam nec varius sociosqu.
                     </InfoPageDescription>
@@ -82,7 +82,7 @@ const LoginWrapper = (props: LoginProps) => {
                         Commodo nullam et facilisis hendrerit pharetra platea duis commodo nascetur libero aptent
                     </InfoPageFootnote>
                 </InfoPage>}
-                {successPage === "signin" && <InfoPage heading='User account created!'>
+                {successPage === "signup" && <InfoPage heading='User account created!'>
                     <InfoPageDescription>
                         Gravida dolor suscipit urna sagittis per  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
                     </InfoPageDescription>

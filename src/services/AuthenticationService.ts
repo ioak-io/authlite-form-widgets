@@ -59,7 +59,7 @@ export const signup = (environment: 'local' | 'production', realm: number | stri
     }
     return fetch(`${url}/${realm}/admin/auth/signup`, {
         method: "POST",
-        body: JSON.stringify({ response_type: "token", ...payload }),
+        body: JSON.stringify({ response_type: "token", ...payload, given_name: null }),
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             authorization: apikey

@@ -91,21 +91,13 @@ export const processSignupResponse = (request: SignupRequest, response: any, dat
             data,
             errorMessages: { system: errorCode }
         };
-    } else if (response.status === 404) {
-        const errorCode = "USER_NOT_FOUND";
+    } else if (response.status === 403) {
+        const errorCode = "USER_ALREADY_EXISTS";
         return {
             outcome: "ERROR",
             errorCode,
             data,
             errorMessages: { email: errorCode }
-        };
-    } else if (response.status === 401) {
-        const errorCode = "INCORRECT_PASSWORD";
-        return {
-            outcome: "ERROR",
-            errorCode,
-            data,
-            errorMessages: { password: errorCode }
         };
     }
     return {

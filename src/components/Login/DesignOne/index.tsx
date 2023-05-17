@@ -7,7 +7,7 @@ import ForgotPasswordForm from '../../ForgotPasswordForm';
 import SigninFormErrorMessages from '../../types/SigninFormErrorMessagesType';
 import SignupFormErrorMessages from '../../types/SignupFormErrorMessagesType';
 import { TranslationDictionary, TranslationScope, getTranslation } from '../../types/TranslationDictionaryType';
-import SendVerifyLinkForm from '../../SendVerifyLinkForm';
+import ResendVerifyLinkForm from '../../ResendVerifyLinkForm';
 import PageView from '../../types/PageViewType';
 
 interface Props {
@@ -57,7 +57,11 @@ const DesignOne = (props: Props) => {
         dictionary={props.dictionary}
       />}
       {props.view === PageView.forgotpassword && <ForgotPasswordForm onSignin={() => changeView(PageView.signin)} />}
-      {props.view === PageView.resendverifyemail && <SendVerifyLinkForm email={props.signinFormErrorMessages.unverifiedEmail || ''} onSignin={() => changeView(PageView.signin)} />}
+      {props.view === PageView.resendverifyemail && <ResendVerifyLinkForm
+        email={props.signinFormErrorMessages.unverifiedEmail || ''}
+        onSignin={() => changeView(PageView.signin)}
+        dictionary={props.dictionary}
+      />}
       {props.view === PageView.placeholder && props.placeholder}
     </div>
   </div >;

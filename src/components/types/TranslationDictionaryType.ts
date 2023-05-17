@@ -29,6 +29,13 @@ export type TranslationDictionary = {
     SIGNUP_ERROR__BLANK_USERNAME: string,
     SIGNUP_ERROR__INVALID_USERNAME: string,
     SIGNUP_ERROR__PASSWORDS_DO_NOT_MATCH: string;
+    SIGNUP_ERROR__USER_ALREADY_EXISTS: string,
+    SIGNUP_ERROR__BAD_REQUEST: string,
+    SIGNUP_ERROR__UNKNOWN_ERROR: string,
+    RESEND_VERIFY_LINK_FORM__MESSAGE: string,
+    RESEND_VERIFY_LINK_FORM__LABEL_EMAIL: string,
+    RESEND_VERIFY_LINK_FORM__ACTION_SEND: string,
+    RESEND_VERIFY_LINK_FORM__ACTION_SIGNIN: string,
 
     [key: string]: string,
 }
@@ -38,7 +45,8 @@ export enum TranslationScope {
     "SIGNIN_ERROR" = "SIGNIN_ERROR",
     "SIGNUP_FORM" = "SIGNUP_FORM",
     "SIGNUP_ERROR" = "SIGNUP_ERROR",
-    "SIGNIN_SUCCESS_PAGE" = "SIGNIN_SUCCESS_PAGE"
+    "SIGNIN_SUCCESS_PAGE" = "SIGNIN_SUCCESS_PAGE",
+    "RESEND_VERIFY_LINK_FORM" = "RESEND_VERIFY_LINK_FORM"
 }
 
 export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
@@ -72,6 +80,15 @@ export const DEFAULT_TRANSLATION_DICTIONARY: TranslationDictionary = {
     SIGNUP_ERROR__BLANK_GIVENNAME: "Given name is empty",
     SIGNUP_ERROR__BLANK_RETYPEPASSWORD: "Retype password is empty",
     SIGNUP_ERROR__PASSWORDS_DO_NOT_MATCH: "Passwords do not match",
+
+    SIGNUP_ERROR__USER_ALREADY_EXISTS: "Email is already taken",
+    SIGNUP_ERROR__BAD_REQUEST: "Bad request",
+    SIGNUP_ERROR__UNKNOWN_ERROR: "Unknown error",
+
+    RESEND_VERIFY_LINK_FORM__MESSAGE: "Email verification pending. Please click on the link sent to your email address to activate your user account.",
+    RESEND_VERIFY_LINK_FORM__LABEL_EMAIL: "Email Address",
+    RESEND_VERIFY_LINK_FORM__ACTION_SEND: "Resend email verification link",
+    RESEND_VERIFY_LINK_FORM__ACTION_SIGNIN: "Sign in now",
 }
 
 export const getTranslation = (
