@@ -4,18 +4,21 @@ import "./style.css";
 import DesignOne from "./DesignOne";
 import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
 import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
-import { TranslationDictionary } from "../types/TranslationDictionaryType";
+import { DEFAULT_TRANSLATION_DICTIONARY, TranslationDictionary } from "../types/TranslationDictionaryType";
 import PageView from "../types/PageViewType";
 import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
+import ResendVerifyLinkFormErrorMessages from "../types/ResendVerifyLinkFormErrorMessagesType";
 
 export type LoginProps = {
     onSignin: any;
     onSignup: any;
     onForgotPassword: any;
+    onResendVerifyLink: any;
     children?: any;
     signinFormErrorMessages: SigninFormErrorMessages;
     signupFormErrorMessages: SignupFormErrorMessages;
     forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
+    resendVerifyLinkFormErrorMessages: ResendVerifyLinkFormErrorMessages;
     clearErrorMessages: any;
     dictionary?: TranslationDictionary;
     view: PageView;
@@ -27,7 +30,6 @@ export type LoginProps = {
  */
 const Login = (props: LoginProps) => {
     const [logo, setLogo] = useState<any>(null);
-    const [tagline, setTagline] = useState<any>(null);
     const [placeholder, setPlaceholder] = useState<any>(null);
 
     useEffect(() => {
@@ -41,9 +43,6 @@ const Login = (props: LoginProps) => {
         _children?.forEach((item: any) => {
             if (item.type.displayName === "Logo" || item.type.name === "Logo") {
                 setLogo(item);
-            }
-            if (item.type.displayName === "Tagline" || item.type.name === "Tagline") {
-                setTagline(item);
             }
             if (item.type.displayName === "Placeholder" || item.type.name === "TaglinePlaceholder") {
                 setPlaceholder(item);
@@ -59,14 +58,15 @@ const Login = (props: LoginProps) => {
                 signinFormErrorMessages={props.signinFormErrorMessages}
                 signupFormErrorMessages={props.signupFormErrorMessages}
                 forgotPasswordFormErrorMessages={props.forgotPasswordFormErrorMessages}
+                resendVerifyLinkFormErrorMessages={props.resendVerifyLinkFormErrorMessages}
                 clearErrorMessages={props.clearErrorMessages}
                 logo={logo}
-                tagline={tagline}
                 placeholder={placeholder}
-                dictionary={props.dictionary}
+                dictionary={props.dictionary || DEFAULT_TRANSLATION_DICTIONARY}
                 view={props.view}
                 changeView={props.changeView}
                 onForgotPassword={props.onForgotPassword}
+                onResendVerifyLink={props.onResendVerifyLink}
             />
         </div>
     );

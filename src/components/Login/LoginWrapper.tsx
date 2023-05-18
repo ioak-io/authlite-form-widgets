@@ -20,6 +20,9 @@ import InfoPageFootnote from "../InfoPage/InfoPageFootnote";
 import InfoPageDescription from "../InfoPage/InfoPageDescription";
 import ForgotPasswordResponse from "../types/ForgotPasswordResponseType";
 import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
+import ResendVerifyLinkRequest from "../types/ForgotPasswordRequestType";
+import ResendVerifyLinkFormErrorMessages from "../types/ResendVerifyLinkFormErrorMessagesType";
+import ResendVerifyLinkResponse from "../types/ResendVerifyLinkResponseType";
 
 export type LoginWrapperProps = {
     children?: any;
@@ -30,11 +33,12 @@ export type LoginWrapperProps = {
  */
 const LoginWrapper = (props: LoginProps) => {
 
-    const [view, setView] = useState<PageView>(PageView.signin);
-    const [successPage, setSuccessPage] = useState<'signin' | 'signup' | 'resetpassword' | null>(null);
+    const [view, setView] = useState<PageView>(PageView.resendverifyemail);
+    const [successPage, setSuccessPage] = useState<'signin' | 'signup' | 'resetpassword' | 'resendverifylink' | null>(null);
     const [signinFormErrorMessages, setSigninFormErrorMessages] = useState<SigninFormErrorMessages>({});
     const [signupFormErrorMessages, setSignupFormErrorMessages] = useState<SignupFormErrorMessages>({});
     const [forgotPasswordFormErrorMessages, setForgotPasswordFormErrorMessages] = useState<ForgotPasswordFormErrorMessages>({});
+    const [resendVerifyLinkFormErrorMessages, setResendVerifyLinkFormErrorMessages] = useState<ResendVerifyLinkFormErrorMessages>({});
 
     const onSignin = (data: SigninRequest) => {
         AuthenticationService.signin("local", 212, data).then((response: SigninResponse) => {
@@ -68,6 +72,17 @@ const LoginWrapper = (props: LoginProps) => {
         })
     }
 
+    const onResendVerifyLink = (data: ResendVerifyLinkRequest) => {
+        AuthenticationService.resendVerifyLink("local", 212, data).then((response: ResendVerifyLinkResponse) => {
+            console.log(response);
+            if (response.outcome === "SUCCESS") {
+                setView(PageView.placeholder);
+                setSuccessPage("resendverifylink");
+            }
+            setResendVerifyLinkFormErrorMessages(response.errorMessages);
+        })
+    }
+
     const clearErrorMessages = () => {
         setSigninFormErrorMessages({});
         setSignupFormErrorMessages({});
@@ -78,9 +93,11 @@ const LoginWrapper = (props: LoginProps) => {
             onSignin={onSignin}
             onSignup={onSignup}
             onForgotPassword={onForgotPassword}
+            onResendVerifyLink={onResendVerifyLink}
             signinFormErrorMessages={signinFormErrorMessages}
             signupFormErrorMessages={signupFormErrorMessages}
             forgotPasswordFormErrorMessages={forgotPasswordFormErrorMessages}
+            resendVerifyLinkFormErrorMessages={resendVerifyLinkFormErrorMessages}
             clearErrorMessages={clearErrorMessages}
             view={view}
             changeView={setView}
@@ -109,6 +126,14 @@ const LoginWrapper = (props: LoginProps) => {
                 {successPage === "resetpassword" && <InfoPage heading='Password reset link sent!'>
                     <InfoPageDescription>
                         Gravida dolor suscipit urna sagittis per  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
+                    </InfoPageDescription>
+                    <InfoPageFootnote>
+                        Rutrum elit lacus consequat justo luctus per proin venenatis varius quam dui dignissim etiam
+                    </InfoPageFootnote>
+                </InfoPage>}
+                {successPage === "resendverifylink" && <InfoPage heading='Email confirmation link sent!'>
+                    <InfoPageDescription>
+                        Please check your email for  <a onClick={() => setView(PageView.signin)}>login now</a> parturient eu. laoreet congue fermentum ipsum tincidunt elementum auctor aptent aliquam feugiat interdum. porta sem metus convallis donec nam sodales.
                     </InfoPageDescription>
                     <InfoPageFootnote>
                         Rutrum elit lacus consequat justo luctus per proin venenatis varius quam dui dignissim etiam

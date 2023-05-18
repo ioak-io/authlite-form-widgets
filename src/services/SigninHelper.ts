@@ -1,19 +1,21 @@
+import SigninFormErrorMessages from "../components/types/SigninFormErrorMessagesType";
 import SigninRequest from "../components/types/SigninRequest";
 import SigninResponse from "../components/types/SigninResponse";
+import { TranslationName } from "../components/types/TranslationDictionaryType";
 import { isEmailValid, isEmptyOrSpaces } from "../utils/TextUtils";
 
 export const validateSigninForm = (payload: { email: string, password: string }): (SigninResponse | null) => {
-    const errorMessages: any = {};
+    const errorMessages: SigninFormErrorMessages = {};
     const error = [];
     if (isEmptyOrSpaces(payload.email)) {
-        const errorCode = "BLANK_USERNAME";
+        const errorCode = TranslationName.SIGNIN_ERROR__BLANK_USERNAME;
         error.push({
             "field": "email",
             errorCode
         });
         errorMessages.email = errorCode;
     } else if (!isEmailValid(payload.email)) {
-        const errorCode = "INVALID_USERNAME";
+        const errorCode = TranslationName.SIGNIN_ERROR__INVALID_USERNAME;
         error.push({
             "field": "email",
             errorCode
@@ -22,7 +24,7 @@ export const validateSigninForm = (payload: { email: string, password: string })
     }
 
     if (isEmptyOrSpaces(payload.password)) {
-        const errorCode = "BLANK_PASSWORD";
+        const errorCode = TranslationName.SIGNIN_ERROR__BLANK_PASSWORD;
         error.push({
             "field": "password",
             errorCode
@@ -43,7 +45,7 @@ export const validateSigninForm = (payload: { email: string, password: string })
 
 export const processSigninResponse = (request: SigninRequest, response: any, data: any): SigninResponse => {
     if (response.status === 400) {
-        const errorCode = "BAD_REQUEST";
+        const errorCode = TranslationName.SIGNIN_ERROR__BAD_REQUEST;
         return {
             outcome: "ERROR",
             errorCode,
@@ -51,7 +53,7 @@ export const processSigninResponse = (request: SigninRequest, response: any, dat
             errorMessages: { system: errorCode }
         };
     } else if (response.status === 404) {
-        const errorCode = "USER_NOT_FOUND";
+        const errorCode = TranslationName.SIGNIN_ERROR__USER_NOT_FOUND;
         return {
             outcome: "ERROR",
             errorCode,
@@ -59,7 +61,7 @@ export const processSigninResponse = (request: SigninRequest, response: any, dat
             errorMessages: { email: errorCode }
         };
     } else if (response.status === 403) {
-        const errorCode = "EMAIL_NOT_VERIFIED";
+        const errorCode = TranslationName.SIGNIN_ERROR__EMAIL_NOT_VERIFIED;
         return {
             outcome: "ERROR",
             errorCode,
@@ -67,7 +69,7 @@ export const processSigninResponse = (request: SigninRequest, response: any, dat
             errorMessages: { email: errorCode, unverifiedEmail: request.email }
         };
     } else if (response.status === 401) {
-        const errorCode = "INCORRECT_PASSWORD";
+        const errorCode = TranslationName.SIGNIN_ERROR__INCORRECT_PASSWORD;
         return {
             outcome: "ERROR",
             errorCode,
@@ -83,7 +85,7 @@ export const processSigninResponse = (request: SigninRequest, response: any, dat
 }
 
 export const processSigninException = (error: any): SigninResponse => {
-    const errorCode = "UNKNOWN_ERROR";
+    const errorCode = TranslationName.SIGNIN_ERROR__UNKNOWN_ERROR;
     return {
         outcome: "ERROR",
         errorCode,

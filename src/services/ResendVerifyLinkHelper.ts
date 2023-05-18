@@ -1,21 +1,21 @@
-import ForgotPasswordFormErrorMessages from "../components/types/ForgotPasswordFormErrorMessagesType";
-import ForgotPasswordRequest from "../components/types/ForgotPasswordRequestType";
-import ForgotPasswordResponse from "../components/types/ForgotPasswordResponseType";
+import ResendVerifyLinkRequest from "../components/types/ForgotPasswordRequestType";
+import ResendVerifyLinkFormErrorMessages from "../components/types/ResendVerifyLinkFormErrorMessagesType";
+import ResendVerifyLinkResponse from "../components/types/ResendVerifyLinkResponseType";
 import { TranslationName } from "../components/types/TranslationDictionaryType";
 import { isEmailValid, isEmptyOrSpaces } from "../utils/TextUtils";
 
-export const validateResetPasswordLinkForm = (payload: ForgotPasswordRequest): (ForgotPasswordResponse | null) => {
-    const errorMessages: ForgotPasswordFormErrorMessages = {};
+export const validateResendVerifyLinkForm = (payload: ResendVerifyLinkRequest): (ResendVerifyLinkResponse | null) => {
+    const errorMessages: ResendVerifyLinkFormErrorMessages = {};
     const error = [];
     if (isEmptyOrSpaces(payload.email)) {
-        const errorCode = TranslationName.FORGOT_PASSWORD_ERROR__BLANK_USERNAME;
+        const errorCode = TranslationName.RESEND_VERIFY_LINK_ERROR__BLANK_USERNAME;
         error.push({
             "field": "email",
             errorCode
         });
         errorMessages.email = errorCode;
     } else if (!isEmailValid(payload.email)) {
-        const errorCode = TranslationName.FORGOT_PASSWORD_ERROR__INVALID_USERNAME;
+        const errorCode = TranslationName.RESEND_VERIFY_LINK_ERROR__INVALID_USERNAME;
         error.push({
             "field": "email",
             errorCode
@@ -34,9 +34,9 @@ export const validateResetPasswordLinkForm = (payload: ForgotPasswordRequest): (
     }
 }
 
-export const processResetPasswordLinkResponse = (request: ForgotPasswordRequest, response: any, data: any): ForgotPasswordResponse => {
+export const processResendVerifyLinkResponse = (request: ResendVerifyLinkRequest, response: any, data: any): ResendVerifyLinkResponse => {
     if (response.status === 400) {
-        const errorCode = TranslationName.FORGOT_PASSWORD_ERROR__BAD_REQUEST;
+        const errorCode = TranslationName.RESEND_VERIFY_LINK_ERROR__BAD_REQUEST;
         return {
             outcome: "ERROR",
             errorCode,
@@ -44,7 +44,7 @@ export const processResetPasswordLinkResponse = (request: ForgotPasswordRequest,
             errorMessages: { system: errorCode }
         };
     } else if (response.status === 404) {
-        const errorCode = TranslationName.FORGOT_PASSWORD_ERROR__USER_NOT_FOUND;
+        const errorCode = TranslationName.RESEND_VERIFY_LINK_ERROR__USER_NOT_FOUND;
         return {
             outcome: "ERROR",
             errorCode,
@@ -59,8 +59,8 @@ export const processResetPasswordLinkResponse = (request: ForgotPasswordRequest,
     };
 }
 
-export const processResetPasswordLinkFormException = (error: any): ForgotPasswordResponse => {
-    const errorCode = TranslationName.FORGOT_PASSWORD_ERROR__UNKNOWN_ERROR;
+export const processResendVerifyLinkFormException = (error: any): ResendVerifyLinkResponse => {
+    const errorCode = TranslationName.RESEND_VERIFY_LINK_ERROR__UNKNOWN_ERROR;
     console.log(error.status)
     return {
         outcome: "ERROR",

@@ -1,8 +1,8 @@
 import { TranslationName } from "./TranslationDictionaryType";
 
-type ForgotPasswordFormErrorMessages = {
+type ResendVerifyLinkFormErrorMessages = {
     email?: TranslationName;
     system?: TranslationName;
 }
 
-export default ForgotPasswordFormErrorMessages;
+export default ResendVerifyLinkFormErrorMessages;

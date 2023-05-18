@@ -1,19 +1,21 @@
+import SignupFormErrorMessages from "../components/types/SignupFormErrorMessagesType";
 import SignupRequest from "../components/types/SignupRequest";
 import SignupResponse from "../components/types/SignupResponse";
+import { TranslationName } from "../components/types/TranslationDictionaryType";
 import { isEmailValid, isEmptyOrSpaces } from "../utils/TextUtils";
 
 export const validateSignupForm = (payload: SignupRequest): (SignupResponse | null) => {
-    const errorMessages: any = {};
+    const errorMessages: SignupFormErrorMessages = {};
     const error = [];
     if (isEmptyOrSpaces(payload.email)) {
-        const errorCode = "BLANK_USERNAME";
+        const errorCode = TranslationName.SIGNUP_ERROR__BLANK_USERNAME;
         error.push({
             "field": "email",
             errorCode
         });
         errorMessages.email = errorCode;
     } else if (!isEmailValid(payload.email)) {
-        const errorCode = "INVALID_USERNAME";
+        const errorCode = TranslationName.SIGNUP_ERROR__INVALID_USERNAME;
         error.push({
             "field": "email",
             errorCode
@@ -22,7 +24,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
     }
 
     if (isEmptyOrSpaces(payload.password)) {
-        const errorCode = "BLANK_PASSWORD";
+        const errorCode = TranslationName.SIGNUP_ERROR__BLANK_PASSWORD;
         error.push({
             "field": "password",
             errorCode
@@ -31,7 +33,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
     }
 
     if (isEmptyOrSpaces(payload.retype_password)) {
-        const errorCode = "BLANK_RETYPEPASSWORD";
+        const errorCode = TranslationName.SIGNUP_ERROR__BLANK_RETYPEPASSWORD;
         error.push({
             "field": "retype_password",
             errorCode
@@ -40,7 +42,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
     }
 
     if (payload.password !== payload.retype_password) {
-        const errorCode = "PASSWORDS_DO_NOT_MATCH";
+        const errorCode = TranslationName.SIGNUP_ERROR__PASSWORDS_DO_NOT_MATCH;
         error.push({
             "field": "password",
             errorCode
@@ -54,7 +56,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
     }
 
     if (isEmptyOrSpaces(payload.given_name)) {
-        const errorCode = "BLANK_GIVENNAME";
+        const errorCode = TranslationName.SIGNUP_ERROR__BLANK_GIVENNAME;
         error.push({
             "field": "given_name",
             errorCode
@@ -63,7 +65,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
     }
 
     if (isEmptyOrSpaces(payload.family_name)) {
-        const errorCode = "BLANK_FAMILYNAME";
+        const errorCode = TranslationName.SIGNUP_ERROR__BLANK_FAMILYNAME;
         error.push({
             "field": "family_name",
             errorCode
@@ -84,7 +86,7 @@ export const validateSignupForm = (payload: SignupRequest): (SignupResponse | nu
 
 export const processSignupResponse = (request: SignupRequest, response: any, data: any): SignupResponse => {
     if (response.status === 400) {
-        const errorCode = "BAD_REQUEST";
+        const errorCode = TranslationName.SIGNUP_ERROR__BAD_REQUEST;
         return {
             outcome: "ERROR",
             errorCode,
@@ -92,7 +94,7 @@ export const processSignupResponse = (request: SignupRequest, response: any, dat
             errorMessages: { system: errorCode }
         };
     } else if (response.status === 403) {
-        const errorCode = "USER_ALREADY_EXISTS";
+        const errorCode = TranslationName.SIGNUP_ERROR__USER_ALREADY_EXISTS;
         return {
             outcome: "ERROR",
             errorCode,
@@ -108,7 +110,7 @@ export const processSignupResponse = (request: SignupRequest, response: any, dat
 }
 
 export const processSignupException = (error: any): SignupResponse => {
-    const errorCode = "UNKNOWN_ERROR";
+    const errorCode = TranslationName.SIGNUP_ERROR__UNKNOWN_ERROR;
     return {
         outcome: "ERROR",
         errorCode,

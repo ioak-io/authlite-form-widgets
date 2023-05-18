@@ -1,7 +1,9 @@
+import { TranslationName } from "./TranslationDictionaryType";
+
 type SigninFormErrorMessages = {
-    email?: string;
-    password?: string;
-    system?: string;
+    email?: TranslationName;
+    password?: TranslationName;
+    system?: TranslationName;
     unverifiedEmail?: string;
 }
 

@@ -1,8 +1,11 @@
+import ResendVerifyLinkRequest from "../components/types/ForgotPasswordRequestType";
 import ForgotPasswordRequest from "../components/types/ForgotPasswordRequestType";
 import ForgotPasswordResponse from "../components/types/ForgotPasswordResponseType";
+import ResendVerifyLinkResponse from "../components/types/ResendVerifyLinkResponseType";
 import SigninRequest from "../components/types/SigninRequest";
 import SigninResponse from "../components/types/SigninResponse";
 import SignupRequest from "../components/types/SignupRequest";
+import { processResendVerifyLinkFormException, processResendVerifyLinkResponse, validateResendVerifyLinkForm } from "./ResendVerifyLinkHelper";
 import { processResetPasswordLinkFormException, processResetPasswordLinkResponse, validateResetPasswordLinkForm } from "./ResetPasswordLinkHelper";
 import { processSigninException, processSigninResponse, validateSigninForm } from "./SigninHelper";
 import { processSignupException, processSignupResponse, validateSignupForm } from "./SignupHelper";
@@ -105,5 +108,35 @@ export const resetPasswordLink = (environment: 'local' | 'production', realm: nu
             }))
         .catch((error: any) => {
             return processResetPasswordLinkFormException(error);
+        });
+}
+
+export const resendVerifyLink = (environment: 'local' | 'production', realm: number | string, payloadRequest: ResendVerifyLinkRequest): Promise<ResendVerifyLinkResponse> => {
+    const payload: ResendVerifyLinkRequest = {
+        email: payloadRequest.email?.trim(),
+    }
+    let url = BASE_URL_PRODUCTION;
+    if (environment === 'local') {
+        url = BASE_URL_LOCAL;
+    }
+    const validationError = validateResendVerifyLinkForm(payload);
+    if (validationError) {
+        return new Promise((resolve, reject) => {
+            resolve(validationError);
+        })
+    }
+    return fetch(`${url}/${realm}/user/auth/verify-email/resend`, {
+        method: "POST",
+        body: JSON.stringify({ ...payload }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+    })
+        .then((response) => response.json()
+            .then((data) => {
+                return processResendVerifyLinkResponse(payload, response, data);
+            }))
+        .catch((error: any) => {
+            return processResendVerifyLinkFormException(error);
         });
 }

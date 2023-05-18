@@ -1,5 +1,5 @@
-type ForgotPasswordRequest = {
+type ResendVerifyLinkRequest = {
     email: string;
 }
 
-export default ForgotPasswordRequest;
+export default ResendVerifyLinkRequest;
