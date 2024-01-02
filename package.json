@@ -1,5 +1,5 @@
 {
-  "name": "authlite",
+  "name": "authlite-form-widgets",
   "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
@@ -15,15 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ioak-io/authlite.git"
+    "url": "git+https://github.com/ioak-io/authlite-form-widgets.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ioak-io/authlite/issues"
+    "url": "https://github.com/ioak-io/authlite-form-widgets/issues"
   },
-  "homepage": "https://github.com/ioak-io/authlite#readme",
+  "homepage": "https://github.com/ioak-io/authlite-form-widgets#readme",
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
