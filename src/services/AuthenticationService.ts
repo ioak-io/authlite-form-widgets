@@ -46,6 +46,7 @@ export const signin = (environment: 'local' | 'production', realm: number | stri
 
 
 export const signup = (environment: 'local' | 'production', realm: number | string, payloadRequest: SignupRequest, apikey: string): Promise<SigninResponse> => {
+    console.log(payloadRequest);
     const payload: SignupRequest = {
         given_name: payloadRequest.given_name?.trim(),
         family_name: payloadRequest.family_name?.trim(),
@@ -65,7 +66,7 @@ export const signup = (environment: 'local' | 'production', realm: number | stri
     }
     return fetch(`${url}/${realm}/admin/auth/signup`, {
         method: "POST",
-        body: JSON.stringify({ response_type: "token", ...payload, given_name: null }),
+        body: JSON.stringify({ response_type: "token", ...payload }),
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             authorization: apikey

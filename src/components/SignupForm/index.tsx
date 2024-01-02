@@ -31,6 +31,7 @@ const SignupForm = (props: Props) => {
 
   const onSignup = (event: any) => {
     event.preventDefault();
+    console.log(state);
     props.onSignup({
       ...state
     })

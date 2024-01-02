@@ -41,10 +41,11 @@ const Login = (props: LoginProps) => {
             _children = [];
         }
         _children?.forEach((item: any) => {
+            console.log(item.type.displayName, item.type.name);
             if (item.type.displayName === "Logo" || item.type.name === "Logo") {
                 setLogo(item);
             }
-            if (item.type.displayName === "Placeholder" || item.type.name === "TaglinePlaceholder") {
+            if (item.type.displayName === "Placeholder" || item.type.name === "Placeholder") {
                 setPlaceholder(item);
             }
         })
