@@ -9,7 +9,7 @@
 
 @media (min-width: 960px) {
     .authlite-d1 {
-        grid-template-columns: auto 1fr;
+        grid-template-columns: 450px 1fr;
     }
 
     .authlite-d1__left {
