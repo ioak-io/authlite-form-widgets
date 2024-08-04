@@ -1,4 +1,4 @@
-import ResendVerifyLinkRequest from "../components/types/ForgotPasswordRequestType";
+import ResendVerifyLinkRequest from "../components/types/ResendVerifyLinkRequestType";
 import ForgotPasswordRequest from "../components/types/ForgotPasswordRequestType";
 import ForgotPasswordResponse from "../components/types/ForgotPasswordResponseType";
 import ResendVerifyLinkResponse from "../components/types/ResendVerifyLinkResponseType";
@@ -190,7 +190,8 @@ export const resetPasswordLink = (
 export const resendVerifyLink = (
   environment: "local" | "production",
   realm: number | string,
-  payloadRequest: ResendVerifyLinkRequest
+  payloadRequest: ResendVerifyLinkRequest,
+  emailConfirmationPageLink?: string
 ): Promise<ResendVerifyLinkResponse> => {
   const payload: ResendVerifyLinkRequest = {
     email: payloadRequest.email?.trim(),
@@ -207,7 +208,10 @@ export const resendVerifyLink = (
   }
   return fetch(`${url}/${realm}/user/auth/verify-email/resend`, {
     method: "POST",
-    body: JSON.stringify({ ...payload }),
+    body: JSON.stringify({
+      ...payload,
+      emailConfirmationPageLink: emailConfirmationPageLink,
+    }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
