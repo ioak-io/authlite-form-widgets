@@ -1,3 +1,4 @@
+import ResetPasswordRequest from "../components/types/ResetPasswordRequest";
 import SignupFormErrorMessages from "../components/types/SignupFormErrorMessagesType";
 import SignupRequest from "../components/types/SignupRequest";
 import SignupResponse from "../components/types/SignupResponse";

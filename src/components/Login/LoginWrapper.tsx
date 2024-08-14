@@ -26,6 +26,14 @@ import ResendVerifyLinkResponse from "../types/ResendVerifyLinkResponseType";
 import ValidateConfirmEmailLinkRequest from "../types/ValidateConfirmEmailLinkRequestType";
 import ValidateConfirmEmailLinkMessages from "../types/ValidateConfirmEmailLinkMessagesType";
 import ValidateConfirmEmailLinkResponse from "../types/ValidateConfirmEmailLinkResponseType";
+import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
+import ChangePasswordRequest from "../types/ChangePasswordRequestType";
+import UpdateProfileRequest from "../types/UpdateProfileRequestType";
+import ValidateResetPasswordLinkMessages from "../types/ValidateResetPasswordLinkMessagesType";
+import ValidateResetPasswordLinkResponse from "../types/ValidateResetPasswordLinkResponseType";
+import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessagesType";
+import ResetPasswordRequest from "../types/ResetPasswordRequest";
+import ResetPasswordResponse from "../types/ResetPasswordResponse";
 
 export type LoginWrapperProps = {
   children?: any;
@@ -35,12 +43,18 @@ export type LoginWrapperProps = {
 /**
  * Component to render Login form element.
  */
+
+const realm = 210;
+const apiKey = "245556b1-0d9e-4e84-a512-d1081dd53cb0";
+const environment = "local";
+
 const LoginWrapper = (props: LoginProps) => {
   // const [view, setView] = useState<PageView>(PageView.signin);
-  const [view, setView] = useState<PageView>(PageView.confirmemail);
+  const [view, setView] = useState<PageView>(PageView.resetpassword);
   const [successPage, setSuccessPage] = useState<
     | "signin"
     | "signup"
+    | "forgotpassword"
     | "resetpassword"
     | "resendverifylink"
     | "confirmemail"
@@ -60,9 +74,17 @@ const LoginWrapper = (props: LoginProps) => {
     resendVerifyLinkFormErrorMessages,
     setResendVerifyLinkFormErrorMessages,
   ] = useState<ResendVerifyLinkFormErrorMessages>({});
+  const [myProfileFormErrorMessages, setMyProfileFormErrorMessages] =
+    useState<MyProfileFormErrorMessages>({});
+  const [
+    validateResetPasswordLinkMessages,
+    setValidateResetPasswordLinkMessages,
+  ] = useState<ValidateResetPasswordLinkMessages>({ outcome: "unknown" });
+  const [resetPasswordFormErrorMessages, setResetPasswordFormErrorMessages] =
+    useState<ResetPasswordFormErrorMessages>({});
 
   const onSignin = (data: SigninRequest) => {
-    AuthenticationService.signin("local", 210, data).then(
+    AuthenticationService.signin(environment, realm, data).then(
       (response: SigninResponse) => {
         if (response.outcome === "SUCCESS") {
           setView(PageView.placeholder);
@@ -74,27 +96,24 @@ const LoginWrapper = (props: LoginProps) => {
   };
 
   const onSignup = (data: SignupRequest) => {
-    AuthenticationService.signup(
-      "local",
-      210,
-      data,
-      "245556b1-0d9e-4e84-a512-d1081dd53cb0"
-    ).then((response: SignupResponse) => {
-      console.log(response);
-      if (response.outcome === "SUCCESS") {
-        setView(PageView.placeholder);
-        setSuccessPage("signup");
+    AuthenticationService.signup(environment, realm, data, apiKey).then(
+      (response: SignupResponse) => {
+        console.log(response);
+        if (response.outcome === "SUCCESS") {
+          setView(PageView.placeholder);
+          setSuccessPage("signup");
+        }
+        setSignupFormErrorMessages(response.errorMessages);
       }
-      setSignupFormErrorMessages(response.errorMessages);
-    });
+    );
   };
 
   const onForgotPassword = (data: SignupRequest) => {
-    AuthenticationService.resetPasswordLink("local", 210, data).then(
+    AuthenticationService.resetPasswordLink(environment, realm, data).then(
       (response: ForgotPasswordResponse) => {
         if (response.outcome === "SUCCESS") {
           setView(PageView.placeholder);
-          setSuccessPage("resetpassword");
+          setSuccessPage("forgotpassword");
         }
         setForgotPasswordFormErrorMessages(response.errorMessages);
       }
@@ -102,7 +121,7 @@ const LoginWrapper = (props: LoginProps) => {
   };
 
   const onResendVerifyLink = (data: ResendVerifyLinkRequest) => {
-    AuthenticationService.resendVerifyLink("local", 210, data).then(
+    AuthenticationService.resendVerifyLink(environment, realm, data).then(
       (response: ResendVerifyLinkResponse) => {
         if (response.outcome === "SUCCESS") {
           setView(PageView.placeholder);
@@ -116,9 +135,8 @@ const LoginWrapper = (props: LoginProps) => {
   const onValidateConfirmEmailLink = (
     data: ValidateConfirmEmailLinkRequest
   ) => {
-    AuthenticationService.confirmEmailLink("local", 210, data).then(
+    AuthenticationService.confirmEmailLink(environment, realm, data).then(
       (response: ValidateConfirmEmailLinkResponse) => {
-        console.log(response);
         if (response.outcome === "SUCCESS") {
           setView(PageView.placeholder);
           setSuccessPage("confirmemail");
@@ -127,6 +145,34 @@ const LoginWrapper = (props: LoginProps) => {
       }
     );
   };
+
+  const onValidateResetPasswordLink = (
+    data: ValidateConfirmEmailLinkRequest
+  ) => {
+    AuthenticationService.onValidateResetPasswordLink(
+      environment,
+      realm,
+      data
+    ).then((response: ValidateResetPasswordLinkResponse) => {
+      setValidateResetPasswordLinkMessages(response.errorMessages);
+    });
+  };
+
+  const onResetPassword = (data: ResetPasswordRequest) => {
+    AuthenticationService.onResetPassword(environment, realm, data).then(
+      (response: ResetPasswordResponse) => {
+        if (response.outcome === "SUCCESS") {
+          setView(PageView.placeholder);
+          setSuccessPage("resetpassword");
+        }
+        setResetPasswordFormErrorMessages(response.errorMessages);
+      }
+    );
+  };
+
+  const onChangePassword = (data: ChangePasswordRequest) => {};
+
+  const onUpdateProfile = (data: UpdateProfileRequest) => {};
 
   const clearErrorMessages = () => {
     setSigninFormErrorMessages({});
@@ -140,11 +186,18 @@ const LoginWrapper = (props: LoginProps) => {
       onForgotPassword={onForgotPassword}
       onResendVerifyLink={onResendVerifyLink}
       onValidateConfirmEmailLink={onValidateConfirmEmailLink}
+      onValidateResetPasswordLink={onValidateResetPasswordLink}
+      onResetPassword={onResetPassword}
+      onChangePassword={onChangePassword}
+      onUpdateProfile={onUpdateProfile}
+      myProfileFormErrorMessages={myProfileFormErrorMessages}
       signinFormErrorMessages={signinFormErrorMessages}
       signupFormErrorMessages={signupFormErrorMessages}
       forgotPasswordFormErrorMessages={forgotPasswordFormErrorMessages}
       resendVerifyLinkFormErrorMessages={resendVerifyLinkFormErrorMessages}
       validateConfirmEmailLinkMessages={validateConfirmEmailLinkMessages}
+      resetPasswordFormErrorMessages={resetPasswordFormErrorMessages}
+      validateResetPasswordLinkMessages={validateResetPasswordLinkMessages}
       clearErrorMessages={clearErrorMessages}
       view={view}
       changeView={setView}
@@ -184,8 +237,23 @@ const LoginWrapper = (props: LoginProps) => {
             </InfoPageFootnote>
           </InfoPage>
         )}
-        {successPage === "resetpassword" && (
+        {successPage === "forgotpassword" && (
           <InfoPage heading="Password reset link sent!">
+            <InfoPageDescription>
+              Gravida dolor suscipit urna sagittis per{" "}
+              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              parturient eu. laoreet congue fermentum ipsum tincidunt elementum
+              auctor aptent aliquam feugiat interdum. porta sem metus convallis
+              donec nam sodales.
+            </InfoPageDescription>
+            <InfoPageFootnote>
+              Rutrum elit lacus consequat justo luctus per proin venenatis
+              varius quam dui dignissim etiam
+            </InfoPageFootnote>
+          </InfoPage>
+        )}
+        {successPage === "resetpassword" && (
+          <InfoPage heading="Password has been updated!">
             <InfoPageDescription>
               Gravida dolor suscipit urna sagittis per{" "}
               <a onClick={() => setView(PageView.signin)}>login now</a>{" "}

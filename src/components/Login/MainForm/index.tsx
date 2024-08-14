@@ -13,6 +13,11 @@ import ForgotPasswordFormErrorMessages from "../../types/ForgotPasswordFormError
 import ResendVerifyLinkFormErrorMessages from "../../types/ResendVerifyLinkFormErrorMessagesType";
 import ConfirmEmailForm from "../../ConfirmEmailForm";
 import ValidateConfirmEmailLinkMessages from "../../types/ValidateConfirmEmailLinkMessagesType";
+import MyProfileForm from "../../MyProfileForm";
+import MyProfileFormErrorMessages from "../../types/MyProfileFormErrorMessagesType";
+import ResetPasswordForm from "../../ResetPasswordForm";
+import ValidateResetPasswordLinkMessages from "../../types/ValidateResetPasswordLinkMessagesType";
+import ResetPasswordFormErrorMessages from "../../types/ResetPasswordFormErrorMessagesType";
 
 interface Props {
   logo?: any;
@@ -22,11 +27,18 @@ interface Props {
   onForgotPassword: any;
   onResendVerifyLink: any;
   onValidateConfirmEmailLink: any;
+  onUpdateProfile: any;
+  onChangePassword: any;
+  onValidateResetPasswordLink: any;
+  onResetPassword: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
   forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
   resendVerifyLinkFormErrorMessages: ResendVerifyLinkFormErrorMessages;
+  myProfileFormErrorMessages: MyProfileFormErrorMessages;
   validateConfirmEmailLinkMessages: ValidateConfirmEmailLinkMessages;
+  validateResetPasswordLinkMessages: ValidateResetPasswordLinkMessages;
+  resetPasswordFormErrorMessages: ResetPasswordFormErrorMessages;
   clearErrorMessages: any;
   dictionary: TranslationDictionary;
   view: PageView;
@@ -76,6 +88,18 @@ const MainForm = (props: Props) => {
           dictionary={props.dictionary}
         />
       )}
+      {props.view === PageView.resetpassword && (
+        <ResetPasswordForm
+          onResetPassword={props.onResetPassword}
+          onValidateResetPasswordLink={props.onValidateResetPasswordLink}
+          resetPasswordFormErrorMessages={props.resetPasswordFormErrorMessages}
+          validateResetPasswordLinkMessages={
+            props.validateResetPasswordLinkMessages
+          }
+          code={props.code || ""}
+          dictionary={props.dictionary}
+        />
+      )}
       {props.view === PageView.resendverifyemail && (
         <ResendVerifyLinkForm
           email={props.signinFormErrorMessages.unverifiedEmail || ""}
@@ -95,6 +119,14 @@ const MainForm = (props: Props) => {
           validateConfirmEmailLinkMessages={
             props.validateConfirmEmailLinkMessages
           }
+        />
+      )}
+      {props.view === PageView.myprofile && (
+        <MyProfileForm
+          onUpdateProfile={props.onUpdateProfile}
+          onChangePassword={props.onChangePassword}
+          myProfileFormErrorMessages={props.myProfileFormErrorMessages}
+          dictionary={props.dictionary}
         />
       )}
       {props.view === PageView.placeholder && props.placeholder}

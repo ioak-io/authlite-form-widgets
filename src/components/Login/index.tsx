@@ -12,6 +12,9 @@ import PageView from "../types/PageViewType";
 import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
 import ResendVerifyLinkFormErrorMessages from "../types/ResendVerifyLinkFormErrorMessagesType";
 import ValidateConfirmEmailLinkMessages from "../types/ValidateConfirmEmailLinkMessagesType";
+import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
+import ValidateResetPasswordLinkMessages from "../types/ValidateResetPasswordLinkMessagesType";
+import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessagesType";
 
 export type LoginProps = {
   onSignin: any;
@@ -19,12 +22,19 @@ export type LoginProps = {
   onForgotPassword: any;
   onResendVerifyLink: any;
   onValidateConfirmEmailLink: any;
+  onUpdateProfile: any;
+  onChangePassword: any;
+  onValidateResetPasswordLink: any;
+  onResetPassword: any;
   children?: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
   forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
   resendVerifyLinkFormErrorMessages: ResendVerifyLinkFormErrorMessages;
+  myProfileFormErrorMessages: MyProfileFormErrorMessages;
   validateConfirmEmailLinkMessages: ValidateConfirmEmailLinkMessages;
+  validateResetPasswordLinkMessages: ValidateResetPasswordLinkMessages;
+  resetPasswordFormErrorMessages: ResetPasswordFormErrorMessages;
   clearErrorMessages: any;
   dictionary?: TranslationDictionary;
   view: PageView;
@@ -66,6 +76,11 @@ const Login = (props: LoginProps) => {
       <DesignOne
         onSignin={props.onSignin}
         onSignup={props.onSignup}
+        onChangePassword={props.onChangePassword}
+        onUpdateProfile={props.onUpdateProfile}
+        onResetPassword={props.onResetPassword}
+        onValidateResetPasswordLink={props.onValidateResetPasswordLink}
+        myProfileFormErrorMessages={props.myProfileFormErrorMessages}
         signinFormErrorMessages={props.signinFormErrorMessages}
         signupFormErrorMessages={props.signupFormErrorMessages}
         forgotPasswordFormErrorMessages={props.forgotPasswordFormErrorMessages}
@@ -74,6 +89,10 @@ const Login = (props: LoginProps) => {
         }
         validateConfirmEmailLinkMessages={
           props.validateConfirmEmailLinkMessages
+        }
+        resetPasswordFormErrorMessages={props.resetPasswordFormErrorMessages}
+        validateResetPasswordLinkMessages={
+          props.validateResetPasswordLinkMessages
         }
         clearErrorMessages={props.clearErrorMessages}
         logo={logo}

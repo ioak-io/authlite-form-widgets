@@ -32,6 +32,20 @@ import {
   processValidateConfirmEmailLinkException,
   processValidateConfirmEmailLinkResponse,
 } from "./ValidateConfirmEmailLinkHelper";
+import ValidateResetPasswordLinkResponse from "../components/types/ValidateResetPasswordLinkResponseType";
+import ValidateResetPasswordLinkRequest from "../components/types/ValidateResetPasswordLinkRequestType";
+import {
+  processValidateResetPasswordLinkException,
+  processValidateResetPasswordLinkResponse,
+  validateResetPasswordLink,
+} from "./ValidateResetPasswordLinkHelper";
+import ResetPasswordRequest from "../components/types/ResetPasswordRequest";
+import {
+  processResetPasswordException,
+  processResetPasswordResponse,
+  validateResetPasswordForm,
+} from "./ResetPasswordHelper";
+import ResetPasswordResponse from "../components/types/ResetPasswordResponse";
 
 const BASE_URL_PRODUCTION = "https://api.ioak.io:8010/api";
 const BASE_URL_LOCAL = "http://localhost:4010/api";
@@ -155,7 +169,8 @@ export const confirmEmailLink = (
 export const resetPasswordLink = (
   environment: "local" | "production",
   realm: number | string,
-  payloadRequest: ForgotPasswordRequest
+  payloadRequest: ForgotPasswordRequest,
+  resetPasswordPageLink?: string
 ): Promise<ForgotPasswordResponse> => {
   const payload: ForgotPasswordRequest = {
     email: payloadRequest.email?.trim(),
@@ -172,7 +187,7 @@ export const resetPasswordLink = (
   }
   return fetch(`${url}/${realm}/user/auth/reset-password-link`, {
     method: "POST",
-    body: JSON.stringify({ ...payload }),
+    body: JSON.stringify({ ...payload, resetPasswordPageLink }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
     },
@@ -184,6 +199,48 @@ export const resetPasswordLink = (
     )
     .catch((error: any) => {
       return processResetPasswordLinkFormException(error);
+    });
+};
+
+export const onValidateResetPasswordLink = (
+  environment: "local" | "production",
+  realm: number | string,
+  payloadRequest: ValidateResetPasswordLinkRequest
+): Promise<ValidateResetPasswordLinkResponse> => {
+  let url = BASE_URL_PRODUCTION;
+  if (environment === "local") {
+    url = BASE_URL_LOCAL;
+  }
+  const payload = {
+    code: payloadRequest.code,
+  };
+  const validationError = validateResetPasswordLink(payload);
+  if (validationError) {
+    return new Promise((resolve, reject) => {
+      resolve(validationError);
+    });
+  }
+  return fetch(
+    `${url}/${realm}/user/auth/validate-reset-password-link/${payload.code}`,
+    {
+      method: "POST",
+      body: JSON.stringify({ ...payload }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    }
+  )
+    .then((response) =>
+      response.json().then((data) => {
+        return processValidateResetPasswordLinkResponse(
+          payload,
+          response,
+          data
+        );
+      })
+    )
+    .catch((error: any) => {
+      return processValidateResetPasswordLinkException(error);
     });
 };
 
@@ -210,7 +267,7 @@ export const resendVerifyLink = (
     method: "POST",
     body: JSON.stringify({
       ...payload,
-      emailConfirmationPageLink: emailConfirmationPageLink,
+      emailConfirmationPageLink,
     }),
     headers: {
       "Content-type": "application/json; charset=UTF-8",
@@ -223,5 +280,40 @@ export const resendVerifyLink = (
     )
     .catch((error: any) => {
       return processResendVerifyLinkFormException(error);
+    });
+};
+
+export const onResetPassword = (
+  environment: "local" | "production",
+  realm: number | string,
+  payloadRequest: ResetPasswordRequest,
+): Promise<ResetPasswordResponse> => {
+  let url = BASE_URL_PRODUCTION;
+  if (environment === "local") {
+    url = BASE_URL_LOCAL;
+  }
+  const validationError = validateResetPasswordForm(payloadRequest);
+  if (validationError) {
+    return new Promise((resolve, reject) => {
+      resolve(validationError);
+    });
+  }
+  return fetch(`${url}/${realm}/user/auth/reset-password/${payloadRequest.code}`, {
+    method: "POST",
+    body: JSON.stringify({
+      password: payloadRequest.password
+    }),
+    headers: {
+      "Content-type": "application/json; charset=UTF-8",
+      // authorization: apikey,
+    },
+  })
+    .then((response) =>
+      response.json().then((data) => {
+        return processResetPasswordResponse(response, data);
+      })
+    )
+    .catch((error: any) => {
+      return processResetPasswordException(error);
     });
 };

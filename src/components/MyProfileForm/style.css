@@ -1,0 +1,17 @@
+.authlite-d1-myprofile-form {
+  display: grid;
+  grid-auto-flow: row;
+  /* row-gap: 20px; */
+  width: 100%;
+  /* margin-top: 20px; */
+}
+
+.authlite-d1-myprofile-form__switch {
+  display: flex;
+  justify-content: center;
+}
+
+.authlite-d1-myprofile-form__switch button {
+  margin-right: 12px;
+  margin-bottom: 12px;
+}

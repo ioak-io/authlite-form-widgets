@@ -1,5 +1,12 @@
 enum PageView {
-    "signin", "signup", "placeholder", "forgotpassword", "resendverifyemail", "confirmemail", "updateprofile"
+  "signin",
+  "signup",
+  "placeholder",
+  "forgotpassword",
+  "resetpassword",
+  "resendverifyemail",
+  "confirmemail",
+  "myprofile",
 }
 
 export default PageView;
