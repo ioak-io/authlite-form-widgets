@@ -49,8 +49,8 @@ const apiKey = "245556b1-0d9e-4e84-a512-d1081dd53cb0";
 const environment = "local";
 
 const LoginWrapper = (props: LoginProps) => {
-  // const [view, setView] = useState<PageView>(PageView.signin);
-  const [view, setView] = useState<PageView>(PageView.resetpassword);
+  const [view, setView] = useState<PageView>(PageView.signin);
+  // const [view, setView] = useState<PageView>(PageView.resetpassword);
   const [successPage, setSuccessPage] = useState<
     | "signin"
     | "signup"

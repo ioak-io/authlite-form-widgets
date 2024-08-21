@@ -6,6 +6,7 @@ import SigninRequest from '../types/SigninRequest';
 import { TranslationDictionary, TranslationName, getTranslation } from '../types/TranslationDictionaryType';
 import Checkbox from '../ui/Checkbox';
 import Tagline from '../Tagline';
+import GoogleSignInButton from '../GoogleSignInButton';
 
 interface Props {
   onSignin: any;
@@ -58,6 +59,9 @@ const SigninForm = (props: Props) => {
       </div>
       <div className="authlite-action-bar authlite-margin-top">
         <button className="authlite-primary-button" type="submit">{getTranslation(TranslationName.SIGNIN_FORM__ACTION_SIGNIN, props.dictionary)}</button>
+      </div>
+      <div className="authlite-margin-top authlite-action-bar-center">
+        <GoogleSignInButton />
       </div>
       <div className="authlite-margin-top authlite-action-bar-center">
         {getTranslation(TranslationName.SIGNIN_FORM__MESSAGE_NO_ACCOUNT, props.dictionary)}
