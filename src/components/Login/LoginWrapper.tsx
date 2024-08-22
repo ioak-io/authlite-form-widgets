@@ -1,39 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import "./style.css";
-import DesignOne from "./DesignOne";
 import Login, { LoginProps } from ".";
 import Logo from "../Logo";
 import authliteBlack from "./authlite_black.svg";
-import Tagline from "../Tagline";
-import * as AuthenticationService from "../../services/AuthenticationService";
-import SigninFormErrorMessages from "../types/SigninFormErrorMessagesType";
-import SignupFormErrorMessages from "../types/SignupFormErrorMessagesType";
-import SigninResponse from "../types/SigninResponse";
-import SigninRequest from "../types/SigninRequest";
-import SignupRequest from "../types/SignupRequest";
-import SignupResponse from "../types/SignupResponse";
 import PageView from "../types/PageViewType";
 import Placeholder from "../Placeholder";
 import InfoPage from "../InfoPage";
 import InfoPageFootnote from "../InfoPage/InfoPageFootnote";
 import InfoPageDescription from "../InfoPage/InfoPageDescription";
-import ForgotPasswordResponse from "../types/ForgotPasswordResponseType";
-import ForgotPasswordFormErrorMessages from "../types/ForgotPasswordFormErrorMessagesType";
-import ResendVerifyLinkRequest from "../types/ForgotPasswordRequestType";
-import ResendVerifyLinkFormErrorMessages from "../types/ResendVerifyLinkFormErrorMessagesType";
-import ResendVerifyLinkResponse from "../types/ResendVerifyLinkResponseType";
-import ValidateConfirmEmailLinkRequest from "../types/ValidateConfirmEmailLinkRequestType";
-import ValidateConfirmEmailLinkMessages from "../types/ValidateConfirmEmailLinkMessagesType";
-import ValidateConfirmEmailLinkResponse from "../types/ValidateConfirmEmailLinkResponseType";
-import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
-import ChangePasswordRequest from "../types/ChangePasswordRequestType";
-import UpdateProfileRequest from "../types/UpdateProfileRequestType";
-import ValidateResetPasswordLinkMessages from "../types/ValidateResetPasswordLinkMessagesType";
-import ValidateResetPasswordLinkResponse from "../types/ValidateResetPasswordLinkResponseType";
-import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessagesType";
-import ResetPasswordRequest from "../types/ResetPasswordRequest";
-import ResetPasswordResponse from "../types/ResetPasswordResponse";
+import {
+  AuthliteAuthenticationService,
+  AuthliteComponents,
+  AuthliteTypes,
+} from "../..";
 
 export type LoginWrapperProps = {
   children?: any;
@@ -48,9 +28,13 @@ const realm = 210;
 const apiKey = "245556b1-0d9e-4e84-a512-d1081dd53cb0";
 const environment = "local";
 
+const emailConfirmationPageLink = undefined;
+const resetPasswordPageLink = undefined;
+
 const LoginWrapper = (props: LoginProps) => {
-  // const [view, setView] = useState<PageView>(PageView.signin);
-  const [view, setView] = useState<PageView>(PageView.resetpassword);
+  const [view, setView] = useState<AuthliteTypes.PageView>(
+    AuthliteTypes.PageView.signin
+  );
   const [successPage, setSuccessPage] = useState<
     | "signin"
     | "signup"
@@ -60,119 +44,135 @@ const LoginWrapper = (props: LoginProps) => {
     | "confirmemail"
     | null
   >(null);
-  const [signinFormErrorMessages, setSigninFormErrorMessages] =
-    useState<SigninFormErrorMessages>({});
-  const [signupFormErrorMessages, setSignupFormErrorMessages] =
-    useState<SignupFormErrorMessages>({});
   const [forgotPasswordFormErrorMessages, setForgotPasswordFormErrorMessages] =
-    useState<ForgotPasswordFormErrorMessages>({});
-  const [
-    validateConfirmEmailLinkMessages,
-    setValidateConfirmEmailLinkMessages,
-  ] = useState<ValidateConfirmEmailLinkMessages>({});
+    useState<AuthliteTypes.ForgotPasswordFormErrorMessages>({});
   const [
     resendVerifyLinkFormErrorMessages,
     setResendVerifyLinkFormErrorMessages,
-  ] = useState<ResendVerifyLinkFormErrorMessages>({});
+  ] = useState<AuthliteTypes.ResendVerifyLinkFormErrorMessages>({});
   const [myProfileFormErrorMessages, setMyProfileFormErrorMessages] =
-    useState<MyProfileFormErrorMessages>({});
+    useState<AuthliteTypes.MyProfileFormErrorMessages>({});
+  const [signinFormErrorMessages, setSigninFormErrorMessages] =
+    useState<AuthliteTypes.SigninFormErrorMessages>({});
+  const [signupFormErrorMessages, setSignupFormErrorMessages] =
+    useState<AuthliteTypes.SignupFormErrorMessages>({});
+  const [
+    validateConfirmEmailLinkMessages,
+    setValidateConfirmEmailLinkMessages,
+  ] = useState<AuthliteTypes.ValidateConfirmEmailLinkMessages>({});
   const [
     validateResetPasswordLinkMessages,
     setValidateResetPasswordLinkMessages,
-  ] = useState<ValidateResetPasswordLinkMessages>({ outcome: "unknown" });
+  ] = useState<AuthliteTypes.ValidateResetPasswordLinkMessages>({
+    outcome: "unknown",
+  });
   const [resetPasswordFormErrorMessages, setResetPasswordFormErrorMessages] =
-    useState<ResetPasswordFormErrorMessages>({});
+    useState<AuthliteTypes.ResetPasswordFormErrorMessages>({});
 
-  const onSignin = (data: SigninRequest) => {
-    AuthenticationService.signin(environment, realm, data).then(
-      (response: SigninResponse) => {
+  const onSignin = (payload: AuthliteTypes.SigninRequest) => {
+    AuthliteAuthenticationService.signin(environment, realm, payload).then(
+      (response: AuthliteTypes.SigninResponse) => {
+        console.log(response);
+        setSigninFormErrorMessages(response.errorMessages);
         if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
+          setView(AuthliteTypes.PageView.placeholder);
           setSuccessPage("signin");
         }
-        setSigninFormErrorMessages(response.errorMessages);
       }
     );
   };
 
-  const onSignup = (data: SignupRequest) => {
-    AuthenticationService.signup(environment, realm, data, apiKey).then(
-      (response: SignupResponse) => {
-        console.log(response);
-        if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
-          setSuccessPage("signup");
-        }
-        setSignupFormErrorMessages(response.errorMessages);
+  const onSignup = (data: AuthliteTypes.SignupRequest) => {
+    AuthliteAuthenticationService.signup(
+      environment,
+      realm,
+      data,
+      apiKey,
+      emailConfirmationPageLink
+    ).then((response: AuthliteTypes.SignupResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("signup");
       }
-    );
+      setSignupFormErrorMessages(response.errorMessages);
+    });
   };
 
-  const onForgotPassword = (data: SignupRequest) => {
-    AuthenticationService.resetPasswordLink(environment, realm, data).then(
-      (response: ForgotPasswordResponse) => {
-        if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
-          setSuccessPage("forgotpassword");
-        }
-        setForgotPasswordFormErrorMessages(response.errorMessages);
+  const onForgotPassword = (data: AuthliteTypes.ForgotPasswordRequest) => {
+    AuthliteAuthenticationService.resetPasswordLink(
+      environment,
+      realm,
+      data,
+      resetPasswordPageLink
+    ).then((response: AuthliteTypes.ForgotPasswordResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("forgotpassword");
       }
-    );
+      setForgotPasswordFormErrorMessages(response.errorMessages);
+    });
   };
 
-  const onResendVerifyLink = (data: ResendVerifyLinkRequest) => {
-    AuthenticationService.resendVerifyLink(environment, realm, data).then(
-      (response: ResendVerifyLinkResponse) => {
-        if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
-          setSuccessPage("resendverifylink");
-        }
-        setResendVerifyLinkFormErrorMessages(response.errorMessages);
+  const onResendVerifyLink = (data: AuthliteTypes.ResendVerifyLinkRequest) => {
+    AuthliteAuthenticationService.resendVerifyLink(
+      environment,
+      realm,
+      data,
+      emailConfirmationPageLink
+    ).then((response: AuthliteTypes.ResendVerifyLinkResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("resendverifylink");
       }
-    );
+      setResendVerifyLinkFormErrorMessages(response.errorMessages);
+    });
   };
 
   const onValidateConfirmEmailLink = (
-    data: ValidateConfirmEmailLinkRequest
+    data: AuthliteTypes.ValidateConfirmEmailLinkRequest
   ) => {
-    AuthenticationService.confirmEmailLink(environment, realm, data).then(
-      (response: ValidateConfirmEmailLinkResponse) => {
-        if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
-          setSuccessPage("confirmemail");
-        }
-        setValidateConfirmEmailLinkMessages(response.errorMessages);
-      }
-    );
-  };
-
-  const onValidateResetPasswordLink = (
-    data: ValidateConfirmEmailLinkRequest
-  ) => {
-    AuthenticationService.onValidateResetPasswordLink(
+    AuthliteAuthenticationService.confirmEmailLink(
       environment,
       realm,
       data
-    ).then((response: ValidateResetPasswordLinkResponse) => {
+    ).then((response: AuthliteTypes.ValidateConfirmEmailLinkResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("confirmemail");
+      }
+      setValidateConfirmEmailLinkMessages(response.errorMessages);
+    });
+  };
+
+  const onValidateResetPasswordLink = (
+    data: AuthliteTypes.ValidateConfirmEmailLinkRequest
+  ) => {
+    AuthliteAuthenticationService.onValidateResetPasswordLink(
+      environment,
+      realm,
+      data
+    ).then((response: AuthliteTypes.ValidateResetPasswordLinkResponse) => {
       setValidateResetPasswordLinkMessages(response.errorMessages);
     });
   };
 
-  const onResetPassword = (data: ResetPasswordRequest) => {
-    AuthenticationService.onResetPassword(environment, realm, data).then(
-      (response: ResetPasswordResponse) => {
-        if (response.outcome === "SUCCESS") {
-          setView(PageView.placeholder);
-          setSuccessPage("resetpassword");
-        }
-        setResetPasswordFormErrorMessages(response.errorMessages);
+  const onResetPassword = (data: AuthliteTypes.ResetPasswordRequest) => {
+    AuthliteAuthenticationService.onResetPassword(
+      environment,
+      realm,
+      data
+    ).then((response: AuthliteTypes.ResetPasswordResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("resetpassword");
       }
-    );
+      setResetPasswordFormErrorMessages(response.errorMessages);
+    });
   };
 
-  const onChangePassword = (data: ChangePasswordRequest) => {};
+  const onChangePassword = (data: AuthliteTypes.ChangePasswordRequest) => {};
 
-  const onUpdateProfile = (data: UpdateProfileRequest) => {};
+  const onUpdateProfile = (data: AuthliteTypes.UpdateProfileRequest) => {};
 
   const clearErrorMessages = () => {
     setSigninFormErrorMessages({});
@@ -180,7 +180,7 @@ const LoginWrapper = (props: LoginProps) => {
   };
 
   return (
-    <Login
+    <AuthliteComponents.Login
       onSignin={onSignin}
       onSignup={onSignup}
       onForgotPassword={onForgotPassword}
@@ -201,102 +201,114 @@ const LoginWrapper = (props: LoginProps) => {
       clearErrorMessages={clearErrorMessages}
       view={view}
       changeView={setView}
-      code={props.code}
     >
-      <Logo>
+      <AuthliteComponents.Logo>
         <img src={authliteBlack} alt="Authlite logo" />
-      </Logo>
-      <Placeholder>
+      </AuthliteComponents.Logo>
+      <AuthliteComponents.Placeholder>
         {successPage === "signin" && (
-          <InfoPage heading="Authentication successful!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="Authentication successful!">
+            <AuthliteComponents.InfoPageDescription>
               Posuere ipsum tellus ornare rutrumaliquam torquent fermentum
               euismod musvestibulum tincidunt cursus quisque elitsuspendisse
               augue. rutrumaliquam commodo{" "}
-              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               parturient rutrumaliquam nec varius sociosqu.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Commodo nullam et facilisis hendrerit pharetra platea duis commodo
               nascetur libero aptent
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
         {successPage === "signup" && (
-          <InfoPage heading="User account created!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="User account created!">
+            <AuthliteComponents.InfoPageDescription>
               Gravida dolor suscipit urna sagittis per{" "}
-              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               parturient eu. laoreet congue fermentum ipsum tincidunt elementum
               auctor aptent aliquam feugiat interdum. porta sem metus convallis
               donec nam sodales.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
         {successPage === "forgotpassword" && (
-          <InfoPage heading="Password reset link sent!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="Password reset link sent!">
+            <AuthliteComponents.InfoPageDescription>
               Gravida dolor suscipit urna sagittis per{" "}
-              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               parturient eu. laoreet congue fermentum ipsum tincidunt elementum
               auctor aptent aliquam feugiat interdum. porta sem metus convallis
               donec nam sodales.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
         {successPage === "resetpassword" && (
-          <InfoPage heading="Password has been updated!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="Password has been updated!">
+            <AuthliteComponents.InfoPageDescription>
               Gravida dolor suscipit urna sagittis per{" "}
-              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               parturient eu. laoreet congue fermentum ipsum tincidunt elementum
               auctor aptent aliquam feugiat interdum. porta sem metus convallis
               donec nam sodales.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
         {successPage === "resendverifylink" && (
-          <InfoPage heading="Email confirmation link sent!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="Email confirmation link sent!">
+            <AuthliteComponents.InfoPageDescription>
               Please check your email for{" "}
-              <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               parturient eu. laoreet congue fermentum ipsum tincidunt elementum
               auctor aptent aliquam feugiat interdum. porta sem metus convallis
               donec nam sodales.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
         {successPage === "confirmemail" && (
-          <InfoPage heading="Email account verified!">
-            <InfoPageDescription>
+          <AuthliteComponents.InfoPage heading="Email account verified!">
+            <AuthliteComponents.InfoPageDescription>
               Your email is verified and the account setup process is complete.
-              You can <a onClick={() => setView(PageView.signin)}>login now</a>{" "}
+              You can{" "}
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>{" "}
               to your account.
-            </InfoPageDescription>
-            <InfoPageFootnote>
+            </AuthliteComponents.InfoPageDescription>
+            <AuthliteComponents.InfoPageFootnote>
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
-            </InfoPageFootnote>
-          </InfoPage>
+            </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
         )}
-      </Placeholder>
-    </Login>
+      </AuthliteComponents.Placeholder>
+    </AuthliteComponents.Login>
   );
 };
 
