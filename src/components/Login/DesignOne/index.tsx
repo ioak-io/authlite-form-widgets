@@ -11,6 +11,9 @@ import ValidateConfirmEmailLinkMessages from "../../types/ValidateConfirmEmailLi
 import MyProfileFormErrorMessages from "../../types/MyProfileFormErrorMessagesType";
 import ValidateResetPasswordLinkMessages from "../../types/ValidateResetPasswordLinkMessagesType";
 import ResetPasswordFormErrorMessages from "../../types/ResetPasswordFormErrorMessagesType";
+import UpdateUserImageErrorMessages from "../../types/UpdateUserImageErrorMessagesType";
+import { AuthliteTypes } from "../../..";
+import { UserClaims } from "../../types";
 
 interface Props {
   logo?: any;
@@ -24,6 +27,7 @@ interface Props {
   onChangePassword: any;
   onValidateResetPasswordLink: any;
   onResetPassword: any;
+  onUpdateUserImage: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
   forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
@@ -32,11 +36,14 @@ interface Props {
   validateConfirmEmailLinkMessages: ValidateConfirmEmailLinkMessages;
   validateResetPasswordLinkMessages: ValidateResetPasswordLinkMessages;
   resetPasswordFormErrorMessages: ResetPasswordFormErrorMessages;
+  updateUserImageErrorMessages: UpdateUserImageErrorMessages;
   clearErrorMessages: any;
   dictionary: TranslationDictionary;
   view: PageView;
   changeView: any;
+  userClaims?: UserClaims;
   code?: string;
+  accessToken?: string;
 }
 
 const DesignOne = (props: Props) => {
@@ -57,6 +64,7 @@ const DesignOne = (props: Props) => {
           onUpdateProfile={props.onUpdateProfile}
           onResetPassword={props.onResetPassword}
           onValidateResetPasswordLink={props.onValidateResetPasswordLink}
+          onUpdateUserImage={props.onUpdateUserImage}
           myProfileFormErrorMessages={props.myProfileFormErrorMessages}
           signinFormErrorMessages={props.signinFormErrorMessages}
           signupFormErrorMessages={props.signupFormErrorMessages}
@@ -73,6 +81,7 @@ const DesignOne = (props: Props) => {
           validateResetPasswordLinkMessages={
             props.validateResetPasswordLinkMessages
           }
+          updateUserImageErrorMessages={props.updateUserImageErrorMessages}
           clearErrorMessages={props.clearErrorMessages}
           logo={props.logo}
           placeholder={props.placeholder}
@@ -82,6 +91,7 @@ const DesignOne = (props: Props) => {
           onForgotPassword={props.onForgotPassword}
           onResendVerifyLink={props.onResendVerifyLink}
           onValidateConfirmEmailLink={props.onValidateConfirmEmailLink}
+          userClaims={props.userClaims}
           code={props.code}
         />
       </div>

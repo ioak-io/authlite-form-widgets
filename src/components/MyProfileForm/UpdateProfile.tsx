@@ -10,26 +10,45 @@ import SignupRequest from "../types/SignupRequest";
 import Tagline from "../Tagline";
 import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
 import UpdateProfileRequest from "../types/UpdateProfileRequestType";
+import { UserClaims } from "../types";
 
 interface Props {
   onUpdateProfile: any;
   onChangePassword: any;
   myProfileFormErrorMessages: MyProfileFormErrorMessages;
   dictionary: TranslationDictionary;
+  userClaims?: UserClaims;
 }
 
 const UpdateProfile = (props: Props) => {
   const [state, setState] = useState<UpdateProfileRequest>({
     given_name: "",
     family_name: "",
-    email: "",
+    avatar: null,
   });
+
+  useEffect(() => {
+    if (props.userClaims) {
+      setState({
+        ...props.userClaims,
+      });
+    }
+  }, [props.userClaims]);
 
   const onInput = (event: any) => {
     setState({
       ...state,
       [event.currentTarget.name]: event.currentTarget.value,
     });
+  };
+
+  const onFileUpload = (event: any) => {
+    if (event.currentTarget.files.length > 0) {
+      setState({
+        ...state,
+        [event.currentTarget.name]: event.currentTarget.files[0],
+      });
+    }
   };
 
   const onUpdateProfile = (event: any) => {
@@ -42,6 +61,33 @@ const UpdateProfile = (props: Props) => {
 
   return (
     <form onSubmit={onUpdateProfile} className="authlite-d1-signup-form">
+      <div className="authlite-margin-top">
+        <FormElementMessage
+          text={getTranslation(
+            TranslationName.MYPROFILE_FORM__LABEL_AVATAR,
+            props.dictionary
+          )}
+          type="label"
+        />
+        {props.userClaims?.avatar}
+        <input
+          className="authlite-input"
+          type="file"
+          autoComplete="off"
+          autoFocus
+          name="avatar"
+          onInput={onFileUpload}
+        />
+        {props.myProfileFormErrorMessages.avatar && (
+          <FormElementMessage
+            text={getTranslation(
+              props.myProfileFormErrorMessages.avatar,
+              props.dictionary
+            )}
+            type="error"
+          />
+        )}
+      </div>
       <div className="authlite-margin-top">
         <FormElementMessage
           text={getTranslation(
@@ -96,7 +142,7 @@ const UpdateProfile = (props: Props) => {
       <div className="authlite-action-bar authlite-margin-top">
         <button className="authlite-primary-button" type="submit">
           {getTranslation(
-            TranslationName.SIGNUP_FORM__ACTION_CREATEACCOUNT,
+            TranslationName.MYPROFILE_FORM__ACTION_UPDATE_PROFILE,
             props.dictionary
           )}
         </button>

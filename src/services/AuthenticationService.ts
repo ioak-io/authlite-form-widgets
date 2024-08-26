@@ -46,6 +46,18 @@ import {
   validateResetPasswordForm,
 } from "./ResetPasswordHelper";
 import ResetPasswordResponse from "../components/types/ResetPasswordResponse";
+import {
+  UpdateProfileRequest,
+  UpdateProfileResponse,
+  UpdateUserImageRequest,
+  UpdateUserImageResponse,
+} from "../components/types";
+import { validateUpdateUserImageForm } from "./UpdateUserImageHelper";
+import {
+  processUpdateUserProfileException,
+  processUpdateUserProfileResponse,
+  validateUpdateUserProfileForm,
+} from "./UpdateUserProfileHelper";
 
 const BASE_URL_PRODUCTION = "https://api.ioak.io:8010/api";
 const BASE_URL_LOCAL = "http://localhost:4010/api";
@@ -286,7 +298,7 @@ export const resendVerifyLink = (
 export const onResetPassword = (
   environment: "local" | "production",
   realm: number | string,
-  payloadRequest: ResetPasswordRequest,
+  payloadRequest: ResetPasswordRequest
 ): Promise<ResetPasswordResponse> => {
   let url = BASE_URL_PRODUCTION;
   if (environment === "local") {
@@ -298,14 +310,54 @@ export const onResetPassword = (
       resolve(validationError);
     });
   }
-  return fetch(`${url}/${realm}/user/auth/reset-password/${payloadRequest.code}`, {
+  return fetch(
+    `${url}/${realm}/user/auth/reset-password/${payloadRequest.code}`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        password: payloadRequest.password,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        // authorization: apikey,
+      },
+    }
+  )
+    .then((response) =>
+      response.json().then((data) => {
+        return processResetPasswordResponse(response, data);
+      })
+    )
+    .catch((error: any) => {
+      return processResetPasswordException(error);
+    });
+};
+
+export const onUpdateUserImage = (
+  environment: "local" | "production",
+  realm: number | string,
+  payloadRequest: UpdateUserImageRequest,
+  accessToken: string
+): Promise<UpdateUserImageResponse> => {
+  let url = BASE_URL_PRODUCTION;
+  if (environment === "local") {
+    url = BASE_URL_LOCAL;
+  }
+  const validationError = validateUpdateUserImageForm(payloadRequest);
+  if (validationError) {
+    return new Promise((resolve, reject) => {
+      resolve(validationError);
+    });
+  }
+
+  const formData = new FormData();
+  formData.append("file", payloadRequest.file);
+  return fetch(`${url}/${realm}/user/auth/update-user-image`, {
     method: "POST",
-    body: JSON.stringify({
-      password: payloadRequest.password
-    }),
+    body: formData,
     headers: {
-      "Content-type": "application/json; charset=UTF-8",
-      // authorization: apikey,
+      // "Content-type": "application/json; charset=UTF-8",
+      authorization: accessToken,
     },
   })
     .then((response) =>
@@ -315,5 +367,48 @@ export const onResetPassword = (
     )
     .catch((error: any) => {
       return processResetPasswordException(error);
+    });
+};
+
+export const onUpdateUserProfile = (
+  environment: "local" | "production",
+  realm: number | string,
+  payloadRequest: UpdateProfileRequest,
+  accessToken: string
+): Promise<UpdateProfileResponse> => {
+  let url = BASE_URL_PRODUCTION;
+  if (environment === "local") {
+    url = BASE_URL_LOCAL;
+  }
+  const validationError = validateUpdateUserProfileForm(payloadRequest);
+  if (validationError) {
+    return new Promise((resolve, reject) => {
+      resolve(validationError);
+    });
+  }
+
+  const formData = new FormData();
+  formData.append("avatar", payloadRequest.avatar);
+  if (payloadRequest.given_name) {
+    formData.append("given_name", payloadRequest.given_name);
+  }
+  if (payloadRequest.family_name) {
+    formData.append("family_name", payloadRequest.family_name);
+  }
+  return fetch(`${url}/${realm}/user/auth/update-profile`, {
+    method: "POST",
+    body: formData,
+    headers: {
+      // "Content-type": "application/json; charset=UTF-8",
+      authorization: accessToken,
+    },
+  })
+    .then((response) =>
+      response.json().then((data) => {
+        return processUpdateUserProfileResponse(response, data);
+      })
+    )
+    .catch((error: any) => {
+      return processUpdateUserProfileException(error);
     });
 };

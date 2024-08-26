@@ -15,6 +15,9 @@ import ValidateConfirmEmailLinkMessages from "../types/ValidateConfirmEmailLinkM
 import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
 import ValidateResetPasswordLinkMessages from "../types/ValidateResetPasswordLinkMessagesType";
 import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessagesType";
+import UpdateUserImageErrorMessages from "../types/UpdateUserImageErrorMessagesType";
+import { AuthliteTypes } from "../..";
+import { UserClaims } from "../types";
 
 export type LoginProps = {
   onSignin: any;
@@ -26,6 +29,7 @@ export type LoginProps = {
   onChangePassword: any;
   onValidateResetPasswordLink: any;
   onResetPassword: any;
+  onUpdateUserImage: any;
   children?: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
@@ -35,10 +39,12 @@ export type LoginProps = {
   validateConfirmEmailLinkMessages: ValidateConfirmEmailLinkMessages;
   validateResetPasswordLinkMessages: ValidateResetPasswordLinkMessages;
   resetPasswordFormErrorMessages: ResetPasswordFormErrorMessages;
+  updateUserImageErrorMessages: UpdateUserImageErrorMessages;
   clearErrorMessages: any;
   dictionary?: TranslationDictionary;
   view: PageView;
   changeView: any;
+  userClaims?: UserClaims;
   code?: string;
 };
 
@@ -80,6 +86,7 @@ const Login = (props: LoginProps) => {
         onUpdateProfile={props.onUpdateProfile}
         onResetPassword={props.onResetPassword}
         onValidateResetPasswordLink={props.onValidateResetPasswordLink}
+        onUpdateUserImage={props.onUpdateUserImage}
         myProfileFormErrorMessages={props.myProfileFormErrorMessages}
         signinFormErrorMessages={props.signinFormErrorMessages}
         signupFormErrorMessages={props.signupFormErrorMessages}
@@ -94,6 +101,7 @@ const Login = (props: LoginProps) => {
         validateResetPasswordLinkMessages={
           props.validateResetPasswordLinkMessages
         }
+        updateUserImageErrorMessages={props.updateUserImageErrorMessages}
         clearErrorMessages={props.clearErrorMessages}
         logo={logo}
         placeholder={placeholder}
@@ -103,6 +111,7 @@ const Login = (props: LoginProps) => {
         onForgotPassword={props.onForgotPassword}
         onResendVerifyLink={props.onResendVerifyLink}
         onValidateConfirmEmailLink={props.onValidateConfirmEmailLink}
+        userClaims={props.userClaims}
         code={props.code}
       />
     </div>

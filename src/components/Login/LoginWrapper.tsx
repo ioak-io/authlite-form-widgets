@@ -14,6 +14,13 @@ import {
   AuthliteComponents,
   AuthliteTypes,
 } from "../..";
+import { UpdateUserImageErrorMessages, UserClaims } from "../types";
+import {
+  getSessionValue,
+  getSessionValueAsJson,
+  setSessionValue,
+  setSessionValueAsJson,
+} from "./SessionUtils";
 
 export type LoginWrapperProps = {
   children?: any;
@@ -33,8 +40,10 @@ const resetPasswordPageLink = undefined;
 
 const LoginWrapper = (props: LoginProps) => {
   const [view, setView] = useState<AuthliteTypes.PageView>(
-    AuthliteTypes.PageView.signin
+    AuthliteTypes.PageView.myprofile
   );
+  const [accessToken, setAccessToken] = useState("");
+  const [userClaims, setUserClaims] = useState<UserClaims>();
   const [successPage, setSuccessPage] = useState<
     | "signin"
     | "signup"
@@ -42,6 +51,7 @@ const LoginWrapper = (props: LoginProps) => {
     | "resetpassword"
     | "resendverifylink"
     | "confirmemail"
+    | "myprofile"
     | null
   >(null);
   const [forgotPasswordFormErrorMessages, setForgotPasswordFormErrorMessages] =
@@ -68,6 +78,8 @@ const LoginWrapper = (props: LoginProps) => {
   });
   const [resetPasswordFormErrorMessages, setResetPasswordFormErrorMessages] =
     useState<AuthliteTypes.ResetPasswordFormErrorMessages>({});
+  const [updateUserImageErrorMessages, setUpdateUserImageErrorMessages] =
+    useState<AuthliteTypes.UpdateUserImageErrorMessages>({});
 
   const onSignin = (payload: AuthliteTypes.SigninRequest) => {
     AuthliteAuthenticationService.signin(environment, realm, payload).then(
@@ -77,6 +89,15 @@ const LoginWrapper = (props: LoginProps) => {
         if (response.outcome === "SUCCESS") {
           setView(AuthliteTypes.PageView.placeholder);
           setSuccessPage("signin");
+          setSessionValueAsJson(`authlitewidget-claims`, response.data.claims);
+          setSessionValue(
+            `authlitewidget-access_token`,
+            response.data.access_token
+          );
+          setSessionValue(
+            `authlitewidget-refresh_token`,
+            response.data.refresh_token
+          );
         }
       }
     );
@@ -172,12 +193,45 @@ const LoginWrapper = (props: LoginProps) => {
 
   const onChangePassword = (data: AuthliteTypes.ChangePasswordRequest) => {};
 
-  const onUpdateProfile = (data: AuthliteTypes.UpdateProfileRequest) => {};
+  const onUpdateProfile = (data: AuthliteTypes.UpdateProfileRequest) => {
+    AuthliteAuthenticationService.onUpdateUserProfile(
+      environment,
+      realm,
+      data,
+      accessToken
+    ).then((response: AuthliteTypes.UpdateUserImageResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("myprofile");
+      }
+      setUpdateUserImageErrorMessages(response.errorMessages);
+    });
+  };
+
+  const onUpdateUserImage = (data: AuthliteTypes.UpdateUserImageRequest) => {
+    AuthliteAuthenticationService.onUpdateUserImage(
+      environment,
+      realm,
+      data,
+      accessToken
+    ).then((response: AuthliteTypes.UpdateUserImageResponse) => {
+      if (response.outcome === "SUCCESS") {
+        setView(AuthliteTypes.PageView.placeholder);
+        setSuccessPage("resetpassword");
+      }
+      setUpdateUserImageErrorMessages(response.errorMessages);
+    });
+  };
 
   const clearErrorMessages = () => {
     setSigninFormErrorMessages({});
     setSignupFormErrorMessages({});
   };
+
+  useEffect(() => {
+    setAccessToken(getSessionValue("authlitewidget-access_token") || "");
+    setUserClaims(getSessionValueAsJson("authlitewidget-claims") || {});
+  }, []);
 
   return (
     <AuthliteComponents.Login
@@ -190,6 +244,7 @@ const LoginWrapper = (props: LoginProps) => {
       onResetPassword={onResetPassword}
       onChangePassword={onChangePassword}
       onUpdateProfile={onUpdateProfile}
+      onUpdateUserImage={onUpdateUserImage}
       myProfileFormErrorMessages={myProfileFormErrorMessages}
       signinFormErrorMessages={signinFormErrorMessages}
       signupFormErrorMessages={signupFormErrorMessages}
@@ -198,6 +253,8 @@ const LoginWrapper = (props: LoginProps) => {
       validateConfirmEmailLinkMessages={validateConfirmEmailLinkMessages}
       resetPasswordFormErrorMessages={resetPasswordFormErrorMessages}
       validateResetPasswordLinkMessages={validateResetPasswordLinkMessages}
+      updateUserImageErrorMessages={updateUserImageErrorMessages}
+      userClaims={userClaims}
       clearErrorMessages={clearErrorMessages}
       view={view}
       changeView={setView}
@@ -305,6 +362,15 @@ const LoginWrapper = (props: LoginProps) => {
               Rutrum elit lacus consequat justo luctus per proin venenatis
               varius quam dui dignissim etiam
             </AuthliteComponents.InfoPageFootnote>
+          </AuthliteComponents.InfoPage>
+        )}
+        {successPage === "myprofile" && (
+          <AuthliteComponents.InfoPage heading="My profile updated">
+            <AuthliteComponents.InfoPageDescription>
+              <a onClick={() => setView(AuthliteTypes.PageView.signin)}>
+                login now
+              </a>
+            </AuthliteComponents.InfoPageDescription>
           </AuthliteComponents.InfoPage>
         )}
       </AuthliteComponents.Placeholder>

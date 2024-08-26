@@ -6,6 +6,7 @@ type MyProfileFormErrorMessages = {
   email?: TranslationName;
   password?: TranslationName;
   retype_password?: TranslationName;
+  avatar?: TranslationName;
   system?: TranslationName;
 };
 

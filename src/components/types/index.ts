@@ -1,4 +1,5 @@
 import PageView from "./PageViewType";
+import UserClaims from "./UserClaimsType";
 import SigninFormErrorMessages from "./SigninFormErrorMessagesType";
 import SignupFormErrorMessages from "./SignupFormErrorMessagesType";
 import ForgotPasswordFormErrorMessages from "./ForgotPasswordFormErrorMessagesType";
@@ -7,6 +8,7 @@ import ValidateConfirmEmailLinkMessages from "./ValidateConfirmEmailLinkMessages
 import ValidateResetPasswordLinkMessages from "./ValidateResetPasswordLinkMessagesType";
 import ResetPasswordFormErrorMessages from "./ResetPasswordFormErrorMessagesType";
 import MyProfileFormErrorMessages from "./MyProfileFormErrorMessagesType";
+import UpdateUserImageErrorMessages from "./UpdateUserImageErrorMessagesType";
 import SignupRequest from "./SignupRequest";
 import SignupResponse from "./SignupResponse";
 // import a from './';
@@ -30,6 +32,8 @@ import ChangePasswordRequest from "./ChangePasswordRequestType";
 import ChangePasswordResponse from "./ChangePasswordResponseType";
 import UpdateProfileRequest from "./UpdateProfileRequestType";
 import UpdateProfileResponse from "./UpdateProfileResponseType";
+import UpdateUserImageRequest from "./UpdateUserImageRequestType";
+import UpdateUserImageResponse from "./UpdateUserImageResponseType";
 
 export {
   PageView,
@@ -42,6 +46,7 @@ export {
   type ValidateResetPasswordLinkMessages,
   type ResetPasswordFormErrorMessages,
   type MyProfileFormErrorMessages,
+  type UpdateUserImageErrorMessages,
   type TranslationDictionary,
   type SigninRequest,
   type SigninResponse,
@@ -61,4 +66,7 @@ export {
   type ChangePasswordResponse,
   type UpdateProfileRequest,
   type UpdateProfileResponse,
+  type UpdateUserImageRequest,
+  type UpdateUserImageResponse,
+  type UserClaims,
 };

@@ -18,6 +18,8 @@ import MyProfileFormErrorMessages from "../../types/MyProfileFormErrorMessagesTy
 import ResetPasswordForm from "../../ResetPasswordForm";
 import ValidateResetPasswordLinkMessages from "../../types/ValidateResetPasswordLinkMessagesType";
 import ResetPasswordFormErrorMessages from "../../types/ResetPasswordFormErrorMessagesType";
+import UpdateUserImageErrorMessages from "../../types/UpdateUserImageErrorMessagesType";
+import { UserClaims } from "../../types";
 
 interface Props {
   logo?: any;
@@ -31,6 +33,7 @@ interface Props {
   onChangePassword: any;
   onValidateResetPasswordLink: any;
   onResetPassword: any;
+  onUpdateUserImage: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   signupFormErrorMessages: SignupFormErrorMessages;
   forgotPasswordFormErrorMessages: ForgotPasswordFormErrorMessages;
@@ -39,10 +42,12 @@ interface Props {
   validateConfirmEmailLinkMessages: ValidateConfirmEmailLinkMessages;
   validateResetPasswordLinkMessages: ValidateResetPasswordLinkMessages;
   resetPasswordFormErrorMessages: ResetPasswordFormErrorMessages;
+  updateUserImageErrorMessages: UpdateUserImageErrorMessages;
   clearErrorMessages: any;
   dictionary: TranslationDictionary;
   view: PageView;
   changeView: any;
+  userClaims?: UserClaims;
   code?: string;
 }
 
@@ -127,6 +132,9 @@ const MainForm = (props: Props) => {
           onChangePassword={props.onChangePassword}
           myProfileFormErrorMessages={props.myProfileFormErrorMessages}
           dictionary={props.dictionary}
+          onUpdateUserImage={props.onUpdateUserImage}
+          updateUserImageErrorMessages={props.updateUserImageErrorMessages}
+          userClaims={props.userClaims}
         />
       )}
       {props.view === PageView.placeholder && props.placeholder}

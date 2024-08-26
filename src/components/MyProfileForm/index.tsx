@@ -11,12 +11,18 @@ import Tagline from "../Tagline";
 import MyProfileFormErrorMessages from "../types/MyProfileFormErrorMessagesType";
 import UpdateProfile from "./UpdateProfile";
 import ChangePassword from "./ChangePassword";
+import UserImage from "./UserImage";
+import UpdateUserImageErrorMessages from "../types/UpdateUserImageErrorMessagesType";
+import { UserClaims } from "../types";
 
 interface Props {
   onUpdateProfile: any;
   onChangePassword: any;
+  onUpdateUserImage: any;
   myProfileFormErrorMessages: MyProfileFormErrorMessages;
+  updateUserImageErrorMessages: UpdateUserImageErrorMessages;
   dictionary: TranslationDictionary;
+  userClaims?: UserClaims;
 }
 
 const MyProfileForm = (props: Props) => {
@@ -27,16 +33,41 @@ const MyProfileForm = (props: Props) => {
   return (
     <div className="authlite-d1-myprofile-form">
       <div className="authlite-d1-myprofile-form__switch">
-        <button className="authlite-primary-button">Change Password</button>
-        <button className="authlite-primary-button">Edit Profile</button>
-        {/* <button className="authlite-primary-button">Change Email</button> */}
+        <button
+          className="authlite-primary-button"
+          onClick={() => setView("updateprofile")}
+        >
+          Edit profile
+        </button>
+        <button
+          className="authlite-primary-button"
+          onClick={() => setView("changepassword")}
+        >
+          Change password
+        </button>
+        <button
+          className="authlite-primary-button"
+          onClick={() => setView("changeemail")}
+        >
+          Change email
+        </button>
       </div>
-      <div>
-        <h2>Update profile</h2>
-        <UpdateProfile {...props} />
-        <h2>Change password</h2>
-        <ChangePassword {...props} />
-      </div>
+      {view === "updateprofile" && (
+        <div>
+          <UpdateProfile {...props} />
+        </div>
+      )}
+      {view === "changepassword" && (
+        <div>
+          <ChangePassword {...props} />
+        </div>
+      )}
+      {view === "changeemail" && (
+        <div>
+          <h4>Change email</h4>
+          {/* <ChangePassword {...props} /> */}
+        </div>
+      )}
     </div>
   );
 };
