@@ -1,0 +1,23 @@
+.profile-container {
+  text-align: center;
+  margin: 20px;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ccc;
+}
+
+.user-name {
+  margin-top: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.first-name,
+.last-name {
+  display: block;
+}

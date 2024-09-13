@@ -18,6 +18,7 @@ import {
   validateResetPasswordLinkForm,
 } from "./ResetPasswordLinkHelper";
 import {
+  processGoogleAuthResponse,
   processSigninException,
   processSigninResponse,
   validateSigninForm,
@@ -48,7 +49,7 @@ import {
 import ResetPasswordResponse from "../components/types/ResetPasswordResponse";
 
 const BASE_URL_PRODUCTION = "https://api.ioak.io:8010/api";
-const BASE_URL_LOCAL = "http://localhost:4010/api";
+const BASE_URL_LOCAL = "http://localhost:4000/api";
 
 export const signin = (
   environment: "local" | "production",
@@ -286,7 +287,7 @@ export const resendVerifyLink = (
 export const onResetPassword = (
   environment: "local" | "production",
   realm: number | string,
-  payloadRequest: ResetPasswordRequest,
+  payloadRequest: ResetPasswordRequest
 ): Promise<ResetPasswordResponse> => {
   let url = BASE_URL_PRODUCTION;
   if (environment === "local") {
@@ -298,11 +299,39 @@ export const onResetPassword = (
       resolve(validationError);
     });
   }
-  return fetch(`${url}/${realm}/user/auth/reset-password/${payloadRequest.code}`, {
-    method: "POST",
-    body: JSON.stringify({
-      password: payloadRequest.password
-    }),
+  return fetch(
+    `${url}/${realm}/user/auth/reset-password/${payloadRequest.code}`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        password: payloadRequest.password,
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        // authorization: apikey,
+      },
+    }
+  )
+    .then((response) =>
+      response.json().then((data) => {
+        return processGoogleAuthResponse(response, data);
+      })
+    )
+    .catch((error: any) => {
+      return processResetPasswordException(error);
+    });
+};
+
+export const onGoogleAuthSuccess = (
+  environment: "local" | "production",
+  code: string
+): Promise<ResetPasswordResponse> => {
+  let url = BASE_URL_PRODUCTION;
+  if (environment === "local") {
+    url = BASE_URL_LOCAL;
+  }
+  return fetch(`${url}/auth?code=${code}`, {
+    method: "GET",
     headers: {
       "Content-type": "application/json; charset=UTF-8",
       // authorization: apikey,

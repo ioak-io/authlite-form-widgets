@@ -19,6 +19,7 @@ import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessa
 export type LoginProps = {
   onSignin: any;
   onSignup: any;
+  onGoogleAuth: any;
   onForgotPassword: any;
   onResendVerifyLink: any;
   onValidateConfirmEmailLink: any;
@@ -49,6 +50,22 @@ const Login = (props: LoginProps) => {
   const [logo, setLogo] = useState<any>(null);
   const [placeholder, setPlaceholder] = useState<any>(null);
 
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+
+  if (code) {
+    // Send the authorization code to the parent window
+    // window.opener.postMessage({ code }, window.location.origin);
+    localStorage.setItem("code", code);
+    // Close the popup window
+
+    event?.preventDefault();
+    event?.stopPropagation();
+    setTimeout(() => {
+      top.window.close();
+    }, 0);
+  }
+
   useEffect(() => {
     let _children = props.children;
     if (!props.children?.length) {
@@ -75,6 +92,7 @@ const Login = (props: LoginProps) => {
     <div className="authlite-login">
       <DesignOne
         onSignin={props.onSignin}
+        onGoogleAuth={props.onGoogleAuth}
         onSignup={props.onSignup}
         onChangePassword={props.onChangePassword}
         onUpdateProfile={props.onUpdateProfile}

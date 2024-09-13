@@ -17,6 +17,7 @@ interface Props {
   placeholder?: any;
   onSignin: any;
   onSignup: any;
+  onGoogleAuth: any;
   onForgotPassword: any;
   onResendVerifyLink: any;
   onValidateConfirmEmailLink: any;
@@ -52,6 +53,7 @@ const DesignOne = (props: Props) => {
       <div className="authlite-d1__right">
         <MainForm
           onSignin={props.onSignin}
+          onGoogleAuth={props.onGoogleAuth}
           onSignup={props.onSignup}
           onChangePassword={props.onChangePassword}
           onUpdateProfile={props.onUpdateProfile}

@@ -11,6 +11,7 @@ import GoogleSignInButton from '../GoogleSignInButton';
 interface Props {
   onSignin: any;
   onSignup: any;
+  onGoogleAuth: any;
   onForgotPassword: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   dictionary: TranslationDictionary;
@@ -61,7 +62,7 @@ const SigninForm = (props: Props) => {
         <button className="authlite-primary-button" type="submit">{getTranslation(TranslationName.SIGNIN_FORM__ACTION_SIGNIN, props.dictionary)}</button>
       </div>
       <div className="authlite-margin-top authlite-action-bar-center">
-        <GoogleSignInButton />
+        <GoogleSignInButton onGoogleAuth={props.onGoogleAuth} />
       </div>
       <div className="authlite-margin-top authlite-action-bar-center">
         {getTranslation(TranslationName.SIGNIN_FORM__MESSAGE_NO_ACCOUNT, props.dictionary)}

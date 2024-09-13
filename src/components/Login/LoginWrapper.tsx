@@ -34,6 +34,7 @@ import ValidateResetPasswordLinkResponse from "../types/ValidateResetPasswordLin
 import ResetPasswordFormErrorMessages from "../types/ResetPasswordFormErrorMessagesType";
 import ResetPasswordRequest from "../types/ResetPasswordRequest";
 import ResetPasswordResponse from "../types/ResetPasswordResponse";
+import UserDetails from "../UserDetails";
 
 export type LoginWrapperProps = {
   children?: any;
@@ -82,11 +83,27 @@ const LoginWrapper = (props: LoginProps) => {
   ] = useState<ValidateResetPasswordLinkMessages>({ outcome: "unknown" });
   const [resetPasswordFormErrorMessages, setResetPasswordFormErrorMessages] =
     useState<ResetPasswordFormErrorMessages>({});
+  const [user, setUser] = useState({});
 
   const onSignin = (data: SigninRequest) => {
     AuthenticationService.signin(environment, realm, data).then(
       (response: SigninResponse) => {
         if (response.outcome === "SUCCESS") {
+          setView(PageView.placeholder);
+          setSuccessPage("signin");
+        }
+        setSigninFormErrorMessages(response.errorMessages);
+      }
+    );
+  };
+
+  const onGoogleAuth = (code: string) => {
+    AuthenticationService.onGoogleAuthSuccess(environment, code).then(
+      (response: SigninResponse) => {
+        if (response.outcome === "SUCCESS") {
+          localStorage.setItem("user", response.data.userDetails);
+          setUser(response.data.userDetails);
+          localStorage.removeItem("code");
           setView(PageView.placeholder);
           setSuccessPage("signin");
         }
@@ -183,6 +200,7 @@ const LoginWrapper = (props: LoginProps) => {
     <Login
       onSignin={onSignin}
       onSignup={onSignup}
+      onGoogleAuth={onGoogleAuth}
       onForgotPassword={onForgotPassword}
       onResendVerifyLink={onResendVerifyLink}
       onValidateConfirmEmailLink={onValidateConfirmEmailLink}
@@ -209,6 +227,11 @@ const LoginWrapper = (props: LoginProps) => {
       <Placeholder>
         {successPage === "signin" && (
           <InfoPage heading="Authentication successful!">
+            <UserDetails
+              firstName={user?.given_name}
+              lastName={user?.family_name}
+              imageUrl={user?.picture}
+            />
             <InfoPageDescription>
               Posuere ipsum tellus ornare rutrumaliquam torquent fermentum
               euismod musvestibulum tincidunt cursus quisque elitsuspendisse
