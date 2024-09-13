@@ -40,7 +40,7 @@ const resetPasswordPageLink = undefined;
 
 const LoginWrapper = (props: LoginProps) => {
   const [view, setView] = useState<AuthliteTypes.PageView>(
-    AuthliteTypes.PageView.myprofile
+    AuthliteTypes.PageView.signin
   );
   const [accessToken, setAccessToken] = useState("");
   const [userClaims, setUserClaims] = useState<UserClaims>();

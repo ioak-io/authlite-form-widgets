@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './style.css';
 import FormElementMessage from '../shared/FormElementMessage';
 import SigninFormErrorMessages from '../types/SigninFormErrorMessagesType';
@@ -6,6 +6,7 @@ import SigninRequest from '../types/SigninRequest';
 import { TranslationDictionary, TranslationName, getTranslation } from '../types/TranslationDictionaryType';
 import Checkbox from '../ui/Checkbox';
 import Tagline from '../Tagline';
+import { AuthContext } from '../../services/AuthProvider';
 
 interface Props {
   onSignin: any;
@@ -35,6 +36,8 @@ const SigninForm = (props: Props) => {
     })
   }
 
+  const { isAuthenticated, login, logout } = useContext(AuthContext);
+
   return (
     <form onSubmit={onSignin} className="authlite-signin-form">
       <div className='authlite-margin-top'>
@@ -63,6 +66,23 @@ const SigninForm = (props: Props) => {
         {getTranslation(TranslationName.SIGNIN_FORM__MESSAGE_NO_ACCOUNT, props.dictionary)}
         <button className="authlite-button-as-link" type="button" onClick={props.onSignup}>{getTranslation(TranslationName.SIGNIN_FORM__ACTION_CREATEACCOUNT, props.dictionary)}</button>
       </div>
+      <div className="authlite-margin-top authlite-action-bar-center">
+      {!isAuthenticated && (
+          <button
+            className="ms-login-button"
+            type="button"
+            onClick={login}
+          >
+            <object
+              type="image/svg+xml"
+              data="https://s3-eu-west-1.amazonaws.com/cdn-testing.web.bas.ac.uk/scratch/bas-style-kit/ms-pictogram/ms-pictogram.svg"
+              className="microsoft-icon"
+            ></object>
+             <span>Sign in with Microsoft</span>
+          </button>
+        )}
+      </div>
+      
     </form>
   )
 };

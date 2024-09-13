@@ -1,6 +1,7 @@
 import { themes } from '@storybook/theming';
 import './style.css';
 import '../src/styles/index.css';
+import { AuthProvider } from '../src/services/AuthProvider';
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -27,4 +28,12 @@ export const parameters = {
     stylePreview: true,
     classTarget: 'html'
   }
-}
+};
+
+export const decorators = [
+  (Story) => (
+    <AuthProvider>
+      <Story />
+    </AuthProvider>
+  ),
+];

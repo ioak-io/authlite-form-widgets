@@ -12,3 +12,27 @@
     flex-wrap: wrap;
     justify-content: space-between;
 }
+
+.microsoft-icon {
+    height: 1em;
+    width: 1em;
+    top: .125em;
+    position: relative;
+  }
+
+  .ms-login-button{
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 0;
+    color: #333;
+    background-color: #eee;
+    border-color: #eee;
+  }
