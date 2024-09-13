@@ -18,6 +18,7 @@ import {
   validateResetPasswordLinkForm,
 } from "./ResetPasswordLinkHelper";
 import {
+  processGoogleAuthResponse,
   processSigninException,
   processSigninResponse,
   validateSigninForm,
@@ -60,7 +61,7 @@ import {
 } from "./UpdateUserProfileHelper";
 
 const BASE_URL_PRODUCTION = "https://api.ioak.io:8010/api";
-const BASE_URL_LOCAL = "http://localhost:4010/api";
+const BASE_URL_LOCAL = "http://localhost:4000/api";
 
 export const signin = (
   environment: "local" | "production",
@@ -325,7 +326,7 @@ export const onResetPassword = (
   )
     .then((response) =>
       response.json().then((data) => {
-        return processResetPasswordResponse(response, data);
+        return processGoogleAuthResponse(response, data);
       })
     )
     .catch((error: any) => {
@@ -333,31 +334,19 @@ export const onResetPassword = (
     });
 };
 
-export const onUpdateUserImage = (
+export const onGoogleAuthSuccess = (
   environment: "local" | "production",
-  realm: number | string,
-  payloadRequest: UpdateUserImageRequest,
-  accessToken: string
-): Promise<UpdateUserImageResponse> => {
+  code: string
+): Promise<ResetPasswordResponse> => {
   let url = BASE_URL_PRODUCTION;
   if (environment === "local") {
     url = BASE_URL_LOCAL;
   }
-  const validationError = validateUpdateUserImageForm(payloadRequest);
-  if (validationError) {
-    return new Promise((resolve, reject) => {
-      resolve(validationError);
-    });
-  }
-
-  const formData = new FormData();
-  formData.append("file", payloadRequest.file);
-  return fetch(`${url}/${realm}/user/auth/update-user-image`, {
-    method: "POST",
-    body: formData,
+  return fetch(`${url}/auth?code=${code}`, {
+    method: "GET",
     headers: {
-      // "Content-type": "application/json; charset=UTF-8",
-      authorization: accessToken,
+      "Content-type": "application/json; charset=UTF-8",
+      // authorization: accessToken,
     },
   })
     .then((response) =>

@@ -7,10 +7,12 @@ import { TranslationDictionary, TranslationName, getTranslation } from '../types
 import Checkbox from '../ui/Checkbox';
 import Tagline from '../Tagline';
 import { AuthContext } from '../../services/AuthProvider';
+import GoogleSignInButton from '../GoogleSignInButton';
 
 interface Props {
   onSignin: any;
   onSignup: any;
+  onGoogleAuth: any;
   onForgotPassword: any;
   signinFormErrorMessages: SigninFormErrorMessages;
   dictionary: TranslationDictionary;
@@ -67,6 +69,8 @@ const SigninForm = (props: Props) => {
         <button className="authlite-button-as-link" type="button" onClick={props.onSignup}>{getTranslation(TranslationName.SIGNIN_FORM__ACTION_CREATEACCOUNT, props.dictionary)}</button>
       </div>
       <div className="authlite-margin-top authlite-action-bar-center">
+        <GoogleSignInButton onGoogleAuth={props.onGoogleAuth} />
+      
       {!isAuthenticated && (
           <button
             className="ms-login-button"

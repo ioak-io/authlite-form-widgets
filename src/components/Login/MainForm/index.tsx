@@ -26,6 +26,7 @@ interface Props {
   placeholder?: any;
   onSignin: any;
   onSignup: any;
+  onGoogleAuth: any;
   onForgotPassword: any;
   onResendVerifyLink: any;
   onValidateConfirmEmailLink: any;
@@ -69,6 +70,7 @@ const MainForm = (props: Props) => {
       {props.view === PageView.signin && (
         <SigninForm
           onSignin={props.onSignin}
+          onGoogleAuth={props.onGoogleAuth}
           onSignup={() => changeView(PageView.signup)}
           onForgotPassword={() => changeView(PageView.forgotpassword)}
           signinFormErrorMessages={props.signinFormErrorMessages}
