@@ -8,6 +8,8 @@ import Checkbox from '../ui/Checkbox';
 import Tagline from '../Tagline';
 import { AuthContext } from '../../services/AuthProvider';
 import GoogleSignInButton from '../GoogleSignInButton';
+import MicroSoftSignInButton from '../MicroSoftSignInButton';
+import { getUserProfile } from '../../services/MicrosoftGraphAPI';
 
 interface Props {
   onSignin: any;
@@ -17,6 +19,7 @@ interface Props {
   signinFormErrorMessages: SigninFormErrorMessages;
   dictionary: TranslationDictionary;
 }
+
 
 const SigninForm = (props: Props) => {
   const [state, setState] = useState<SigninRequest>({
@@ -38,12 +41,25 @@ const SigninForm = (props: Props) => {
     })
   }
 
-  const { isAuthenticated, login, logout } = useContext(AuthContext);
+  const { isAuthenticated, login, logout, msResponse } = useContext(AuthContext);
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const token = msResponse?.accessToken
+        ? msResponse?.accessToken
+        : sessionStorage.getItem("access_token");
+        getUserProfile(token).then((profile) => {
+          console.log(profile);
+          setUserProfile(profile);
+        });
+    }
+  }, [isAuthenticated]);
 
   return (
     <form onSubmit={onSignin} className="authlite-signin-form">
       <div className='authlite-margin-top'>
-        <Tagline title={props.dictionary.SIGNIN_FORM__GREETING_TITLE} subtitle={props.dictionary.SIGNIN_FORM__GREETING_SUBTITLE} />
+        <Tagline title={props.dictionary.SIGNIN_FORM__GREETING_TITLE} name={userProfile?.displayName} subtitle={props.dictionary.SIGNIN_FORM__GREETING_SUBTITLE} />
       </div>
       <div className='authlite-margin-top'>
         <FormElementMessage text={getTranslation(TranslationName.SIGNIN_FORM__LABEL_USERNAME, props.dictionary)} type='label' />
@@ -70,23 +86,8 @@ const SigninForm = (props: Props) => {
       </div>
       <div className="authlite-margin-top authlite-action-bar-center">
         <GoogleSignInButton onGoogleAuth={props.onGoogleAuth} />
-      
-      {!isAuthenticated && (
-          <button
-            className="ms-login-button"
-            type="button"
-            onClick={login}
-          >
-            <object
-              type="image/svg+xml"
-              data="https://s3-eu-west-1.amazonaws.com/cdn-testing.web.bas.ac.uk/scratch/bas-style-kit/ms-pictogram/ms-pictogram.svg"
-              className="microsoft-icon"
-            ></object>
-             <span>Sign in with Microsoft</span>
-          </button>
-        )}
+        <MicroSoftSignInButton/>
       </div>
-      
     </form>
   )
 };

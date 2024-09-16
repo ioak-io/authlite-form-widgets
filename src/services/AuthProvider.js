@@ -3,6 +3,7 @@ import msalInstance, { initializeMsalInstance } from '../../msalConfig';
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [msResponse,setMsResponse]=useState({})
 
     useEffect(() => {
         const initializeAuth = async () => {
@@ -26,7 +27,10 @@ export const AuthProvider = ({ children }) => {
             const response = await msalInstance.loginPopup({
                 scopes: ["user.read"],
             });
+            console.log(response)
             setIsAuthenticated(true);
+            setMsResponse(response);
+            sessionStorage.setItem('access_token',response.accessToken);
         } catch (error) {
             console.error("Login failed", error);
         }
@@ -38,7 +42,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout, msResponse }}>
             {children}
         </AuthContext.Provider>
     );
