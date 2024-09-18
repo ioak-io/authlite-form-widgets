@@ -8,7 +8,6 @@ const msalConfig = {
     }
 };
 
-//authority_id:7e43cd17-1334-4784-b592-4a70f82ecde3
 const msalInstance = new PublicClientApplication(msalConfig);
 
 export const initializeMsalInstance = async () => {
